@@ -6,7 +6,7 @@ require (
 	github.com/alecthomas/participle/v2 v2.0.0-alpha8
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/maxatome/go-testdeep v1.11.0
-	github.com/mitchellh/mapstructure v1.4.3
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/testcontainers/testcontainers-go v0.13.0
 )
 
