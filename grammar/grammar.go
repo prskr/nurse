@@ -1,9 +1,5 @@
 package grammar
 
-type CheckUnmarshaler interface {
-	UnmarshalCheck(c Check) error
-}
-
 type Call struct {
 	Module string  `parser:"(@Module'.')?"`
 	Name   string  `parser:"@Ident"`
@@ -20,5 +16,5 @@ type Check struct {
 }
 
 type Script struct {
-	Checks []Check `parser:"@@*"`
+	Checks []Check `parser:"(@@';'?)*"`
 }

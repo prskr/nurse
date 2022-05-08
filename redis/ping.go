@@ -7,13 +7,11 @@ import (
 	"github.com/go-redis/redis/v8"
 
 	"github.com/baez90/nurse/check"
+	"github.com/baez90/nurse/config"
 	"github.com/baez90/nurse/grammar"
 )
 
-var (
-	_ check.SystemChecker      = (*PingCheck)(nil)
-	_ grammar.CheckUnmarshaler = (*PingCheck)(nil)
-)
+var _ check.SystemChecker = (*PingCheck)(nil)
 
 type PingCheck struct {
 	redis.UniversalClient
@@ -34,7 +32,7 @@ func (p PingCheck) Execute(ctx context.Context) error {
 	return nil
 }
 
-func (p *PingCheck) UnmarshalCheck(c grammar.Check) error {
+func (p *PingCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) error {
 	const (
 		serverOnlyArgCount       = 1
 		serverAndMessageArgCount = 2
@@ -54,7 +52,7 @@ func (p *PingCheck) UnmarshalCheck(c grammar.Check) error {
 		}
 		fallthrough
 	case serverOnlyArgCount:
-		if cli, err := clientFromParam(init.Params[0]); err != nil {
+		if cli, err := clientFromParam(init.Params[0], lookup); err != nil {
 			return err
 		} else {
 			p.UniversalClient = cli

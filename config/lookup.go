@@ -10,17 +10,26 @@ import (
 var (
 	ErrServerNameAlreadyRegistered = errors.New("server name is already registered")
 	ErrNoSuchServer                = errors.New("no known server with given name")
-	DefaultLookup                  = &ServerLookup{
-		servers: make(map[string]Server),
-	}
+
+	_ ServerLookup = (*ServerRegister)(nil)
 )
 
-type ServerLookup struct {
+type ServerLookup interface {
+	Lookup(name string) (*Server, error)
+}
+
+func NewServerRegister() *ServerRegister {
+	return &ServerRegister{
+		servers: make(map[string]Server),
+	}
+}
+
+type ServerRegister struct {
 	lock    sync.RWMutex
 	servers map[string]Server
 }
 
-func (l *ServerLookup) Register(name string, srv Server) error {
+func (l *ServerRegister) Register(name string, srv Server) error {
 	l.lock.Lock()
 	defer l.lock.Unlock()
 
@@ -34,7 +43,7 @@ func (l *ServerLookup) Register(name string, srv Server) error {
 	return nil
 }
 
-func (l *ServerLookup) Lookup(name string) (*Server, error) {
+func (l *ServerRegister) Lookup(name string) (*Server, error) {
 	l.lock.RLock()
 	defer l.lock.RUnlock()
 

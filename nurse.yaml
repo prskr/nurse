@@ -1,0 +1,16 @@
+checkTimeout: 500ms
+servers:
+  redis_local:
+    url: redis://localhost:6379/0
+    args:
+      MaxRetries: 3
+
+endpoints:
+  /ready:
+    checkTimeout: 500ms
+    checks:
+      - redis.PING("redis_local")
+  /liveness:
+    checkTimeout: 100ms
+    checks:
+      - redis.GET("redis_local", "running") => String("ok")

@@ -10,10 +10,10 @@ import (
 	"github.com/baez90/nurse/grammar"
 )
 
-func clientFromParam(p grammar.Param) (redis.UniversalClient, error) {
+func clientFromParam(p grammar.Param, srvLookup config.ServerLookup) (redis.UniversalClient, error) {
 	if srvName, err := p.AsString(); err != nil {
 		return nil, err
-	} else if srv, err := config.DefaultLookup.Lookup(srvName); err != nil {
+	} else if srv, err := srvLookup.Lookup(srvName); err != nil {
 		return nil, err
 	} else if redisCli, err := ClientForServer(srv); err != nil {
 		return nil, err
@@ -35,6 +35,11 @@ func ClientForServer(srv *config.Server) (redis.UniversalClient, error) {
 
 	if err := mapstructure.Decode(srv.Args, opts); err != nil {
 		return nil, err
+	}
+
+	if srv.Credentials != nil {
+		opts.Username = srv.Credentials.Username
+		opts.Password = *srv.Credentials.Password
 	}
 
 	return redis.NewUniversalClient(opts), nil

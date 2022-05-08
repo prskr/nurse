@@ -4,12 +4,26 @@ import (
 	"context"
 	"errors"
 
+	"github.com/baez90/nurse/config"
 	"github.com/baez90/nurse/grammar"
 )
 
-var ErrNoSuchCheck = errors.New("no such check")
+var (
+	ErrNoSuchCheck      = errors.New("no such check")
+	ErrConflictingCheck = errors.New("check with same name already registered")
+)
 
-type SystemChecker interface {
-	grammar.CheckUnmarshaler
-	Execute(ctx context.Context) error
-}
+type (
+	Unmarshaler interface {
+		UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) error
+	}
+
+	SystemChecker interface {
+		Unmarshaler
+		Execute(ctx context.Context) error
+	}
+
+	CallUnmarshaler interface {
+		UnmarshalCall(c grammar.Call) error
+	}
+)

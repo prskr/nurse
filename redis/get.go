@@ -6,13 +6,11 @@ import (
 	"github.com/go-redis/redis/v8"
 
 	"github.com/baez90/nurse/check"
+	"github.com/baez90/nurse/config"
 	"github.com/baez90/nurse/grammar"
 )
 
-var (
-	_ check.SystemChecker      = (*GetCheck)(nil)
-	_ grammar.CheckUnmarshaler = (*GetCheck)(nil)
-)
+var _ check.SystemChecker = (*GetCheck)(nil)
 
 type GetCheck struct {
 	redis.UniversalClient
@@ -30,7 +28,7 @@ func (g GetCheck) Execute(ctx context.Context) error {
 	return g.validators.Validate(cmd)
 }
 
-func (g *GetCheck) UnmarshalCheck(c grammar.Check) error {
+func (g *GetCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) error {
 	const serverAndKeyArgsNumber = 2
 	inst := c.Initiator
 	if err := grammar.ValidateParameterCount(inst.Params, serverAndKeyArgsNumber); err != nil {
@@ -38,11 +36,15 @@ func (g *GetCheck) UnmarshalCheck(c grammar.Check) error {
 	}
 
 	var err error
-	if g.UniversalClient, err = clientFromParam(inst.Params[0]); err != nil {
+	if g.UniversalClient, err = clientFromParam(inst.Params[0], lookup); err != nil {
 		return err
 	}
 
 	if g.Key, err = inst.Params[1].AsString(); err != nil {
+		return err
+	}
+
+	if g.validators, err = ValidatorsForFilters(c.Validators); err != nil {
 		return err
 	}
 
