@@ -1,7 +1,6 @@
 package config
 
 import (
-	"encoding"
 	"fmt"
 	"path"
 	"strings"
@@ -9,8 +8,6 @@ import (
 
 	"github.com/baez90/nurse/grammar"
 )
-
-var _ encoding.TextUnmarshaler = (*EndpointSpec)(nil)
 
 type Route string
 
@@ -26,17 +23,25 @@ type EndpointSpec struct {
 	Checks       []grammar.Check
 }
 
-func (e *EndpointSpec) UnmarshalText(text []byte) error {
+func (s EndpointSpec) Timeout(fallback time.Duration) time.Duration {
+	if s.CheckTimeout != 0 {
+		return s.CheckTimeout
+	}
+
+	return fallback
+}
+
+func (s *EndpointSpec) Parse(text string) error {
 	parser, err := grammar.NewParser[grammar.Script]()
 	if err != nil {
 		return err
 	}
 
-	script, err := parser.Parse(string(text))
+	script, err := parser.Parse(text)
 	if err != nil {
 		return err
 	}
 
-	e.Checks = script.Checks
+	s.Checks = script.Checks
 	return nil
 }

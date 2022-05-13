@@ -49,3 +49,12 @@ func (p Parser[T]) Parse(rawRule string) (*T, error) {
 
 	return into, nil
 }
+
+func (p Parser[T]) ParseBytes(data []byte) (*T, error) {
+	into := new(T)
+	if err := p.grammarParser.ParseBytes("", data, into); err != nil {
+		return nil, err
+	}
+
+	return into, nil
+}

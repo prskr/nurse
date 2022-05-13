@@ -11,6 +11,7 @@ require (
 	github.com/testcontainers/testcontainers-go v0.13.0
 	go.uber.org/zap v1.21.0
 	golang.org/x/exp v0.0.0-20220428152302-39d4317da171
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 

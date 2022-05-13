@@ -50,7 +50,7 @@ func EndpointsFromEnv() (map[Route]EndpointSpec, error) {
 
 		endpointRoute := path.Join(Split(ToLower(Trim(Replace(key, EndpointKeyPrefix, "", -1), "_")), "_")...)
 		spec := EndpointSpec{}
-		if err := spec.UnmarshalText([]byte(value)); err != nil {
+		if err := spec.Parse(value); err != nil {
 			return nil, err
 		}
 

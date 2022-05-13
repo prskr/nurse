@@ -12,7 +12,7 @@ import (
 
 	"github.com/baez90/nurse/config"
 	"github.com/baez90/nurse/grammar"
-	"github.com/baez90/nurse/redis"
+	"github.com/baez90/nurse/protocols/redis"
 )
 
 func TestChecks_Execute(t *testing.T) {

@@ -6,6 +6,7 @@ import (
 
 func Module() *check.Module {
 	m, _ := check.NewModule(
+		"redis",
 		check.WithCheck("ping", check.FactoryFunc(func() check.SystemChecker {
 			return new(PingCheck)
 		})),

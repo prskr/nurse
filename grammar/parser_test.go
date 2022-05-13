@@ -10,7 +10,7 @@ import (
 )
 
 var wantParsedScript = td.Struct(new(grammar.Script), td.StructFields{
-	"Checks": td.Bag(
+	"Script": td.Bag(
 		grammar.Check{
 			Initiator: &grammar.Call{
 				Module: "http",

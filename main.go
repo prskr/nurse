@@ -1,13 +1,18 @@
 package main
 
 import (
+	"errors"
 	"log"
+	"net/http"
 	"os"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
+	"github.com/baez90/nurse/api"
+	"github.com/baez90/nurse/check"
 	"github.com/baez90/nurse/config"
+	"github.com/baez90/nurse/protocols/redis"
 )
 
 var (
@@ -24,7 +29,7 @@ func main() {
 
 	logger := zap.L()
 
-	envCfg, err := config.New(
+	nurseInstance, err := config.New(
 		config.WithValuesFrom(cfg),
 		config.WithConfigFile(cfgFile),
 		config.WithServersFromEnv(),
@@ -32,11 +37,33 @@ func main() {
 	)
 
 	if err != nil {
-		logger.Error("Failed to load config from environment", zap.Error(err))
-		os.Exit(1)
+		logger.Fatal("Failed to load config from environment", zap.Error(err))
 	}
 
-	logger.Debug("Loaded config", zap.Any("config", envCfg))
+	logger.Debug("Loaded config", zap.Any("config", nurseInstance))
+
+	chkRegistry := check.NewRegistry()
+	if err := chkRegistry.Register(redis.Module()); err != nil {
+		logger.Fatal("Failed to register Redis module", zap.Error(err))
+	}
+
+	srvLookup, err := nurseInstance.ServerLookup()
+	if err != nil {
+		logger.Fatal("Failed to prepare server lookup", zap.Error(err))
+	}
+
+	mux, err := api.PrepareMux(nurseInstance, chkRegistry, srvLookup)
+	if err != nil {
+		logger.Fatal("Failed to prepare server mux", zap.Error(err))
+	}
+
+	if err := http.ListenAndServe(":8080", mux); err != nil {
+		if errors.Is(err, http.ErrServerClosed) {
+			return
+		}
+
+		logger.Fatal("Failed to serve HTTP", zap.Error(err))
+	}
 }
 
 func setupLogging() {

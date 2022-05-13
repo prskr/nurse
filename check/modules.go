@@ -37,8 +37,9 @@ func WithCheck(name string, factory Factory) ModuleOption {
 	})
 }
 
-func NewModule(opts ...ModuleOption) (*Module, error) {
+func NewModule(name string, opts ...ModuleOption) (*Module, error) {
 	m := &Module{
+		name:        name,
 		knownChecks: make(map[string]Factory),
 	}
 
@@ -52,8 +53,13 @@ func NewModule(opts ...ModuleOption) (*Module, error) {
 }
 
 type Module struct {
+	name        string
 	lock        sync.RWMutex
 	knownChecks map[string]Factory
+}
+
+func (m *Module) Name() string {
+	return m.name
 }
 
 func (m *Module) Lookup(c grammar.Check, srvLookup config.ServerLookup) (SystemChecker, error) {

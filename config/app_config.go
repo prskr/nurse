@@ -38,6 +38,18 @@ type Nurse struct {
 	CheckTimeout time.Duration
 }
 
+func (n Nurse) ServerLookup() (*ServerRegister, error) {
+	register := NewServerRegister()
+
+	for name, srv := range n.Servers {
+		if err := register.Register(name, srv); err != nil {
+			return nil, err
+		}
+	}
+
+	return register, nil
+}
+
 // Merge merges the current Nurse instance with another one
 // giving the current instance precedence means no set value is overwritten
 func (n Nurse) Merge(other Nurse) Nurse {

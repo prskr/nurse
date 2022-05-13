@@ -26,4 +26,12 @@ type (
 	CallUnmarshaler interface {
 		UnmarshalCall(c grammar.Call) error
 	}
+
+	CheckerLookup interface {
+		Lookup(c grammar.Check, srvLookup config.ServerLookup) (SystemChecker, error)
+	}
+
+	ModuleLookup interface {
+		Lookup(modName string) (CheckerLookup, error)
+	}
 )
