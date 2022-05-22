@@ -3,7 +3,7 @@ module github.com/baez90/nurse
 go 1.18
 
 require (
-	github.com/alecthomas/participle/v2 v2.0.0-alpha8
+	github.com/alecthomas/participle/v2 v2.0.0-alpha9
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/google/uuid v1.3.0
 	github.com/maxatome/go-testdeep v1.11.0
