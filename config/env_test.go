@@ -95,7 +95,7 @@ func TestEndpointsFromEnv(t *testing.T) {
 			},
 			want: td.Map(make(map[config.Route]config.EndpointSpec), td.MapEntries{
 				config.Route("readiness"): td.Struct(config.EndpointSpec{}, td.StructFields{
-					"Script": td.Len(1),
+					"Checks": td.Len(1),
 				}),
 			}),
 			wantErr: false,
@@ -107,7 +107,7 @@ func TestEndpointsFromEnv(t *testing.T) {
 			},
 			want: td.Map(make(map[config.Route]config.EndpointSpec), td.MapEntries{
 				config.Route("readiness"): td.Struct(config.EndpointSpec{}, td.StructFields{
-					"Script": td.Len(2),
+					"Checks": td.Len(2),
 				}),
 			}),
 			wantErr: false,
@@ -119,7 +119,7 @@ func TestEndpointsFromEnv(t *testing.T) {
 			},
 			want: td.Map(make(map[config.Route]config.EndpointSpec), td.MapEntries{
 				config.Route("readiness/redis"): td.Struct(config.EndpointSpec{}, td.StructFields{
-					"Script": td.Len(2),
+					"Checks": td.Len(2),
 				}),
 			}),
 			wantErr: false,
@@ -132,10 +132,10 @@ func TestEndpointsFromEnv(t *testing.T) {
 			},
 			want: td.Map(make(map[config.Route]config.EndpointSpec), td.MapEntries{
 				config.Route("readiness"): td.Struct(config.EndpointSpec{}, td.StructFields{
-					"Script": td.Len(1),
+					"Checks": td.Len(1),
 				}),
 				config.Route("liveness"): td.Struct(config.EndpointSpec{}, td.StructFields{
-					"Script": td.Len(1),
+					"Checks": td.Len(1),
 				}),
 			}),
 			wantErr: false,
