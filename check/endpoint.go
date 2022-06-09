@@ -5,7 +5,7 @@ import (
 	"github.com/baez90/nurse/grammar"
 )
 
-func CheckForScript(script []grammar.Check, lkp ModuleLookup, srvLookup config.ServerLookup) (SystemChecker, error) {
+func CheckForScript(script []grammar.Check, lkp ModuleLookup, srvLookup config.ServerLookup) (Collection, error) {
 	compiledChecks := make([]SystemChecker, 0, len(script))
 
 	for i := range script {

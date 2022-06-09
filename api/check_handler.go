@@ -30,6 +30,6 @@ func (c CheckHandler) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 		return
 	}
 
-	writer.WriteHeader(200)
+	writer.WriteHeader(http.StatusOK)
 	return
 }

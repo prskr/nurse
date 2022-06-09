@@ -9,7 +9,7 @@ import (
 	"github.com/baez90/nurse/grammar"
 )
 
-var _ SystemChecker = (Collection)(nil)
+var _ SystemChecker = Collection(nil)
 
 type Collection []SystemChecker
 

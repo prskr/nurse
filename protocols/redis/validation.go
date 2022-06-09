@@ -58,6 +58,8 @@ func (g *GenericCmdValidator) UnmarshalCall(c grammar.Call) error {
 		if g.comparator, err = validation.JSONValueComparatorFor(*c.Params[0].String); err != nil {
 			return err
 		}
+	case grammar.ParamTypeUnknown:
+		fallthrough
 	default:
 		return errors.New("param type is unknown")
 	}
@@ -70,13 +72,11 @@ func (g *GenericCmdValidator) Validate(cmder redis.Cmder) error {
 		return err
 	}
 
-	switch in := cmder.(type) {
-	case *redis.StringCmd:
+	if in, ok := cmder.(*redis.StringCmd); ok {
 		res, err := in.Result()
 		if err != nil {
 			return err
 		}
-
 		return g.comparator.Equals(res)
 	}
 

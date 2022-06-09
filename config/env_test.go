@@ -115,6 +115,7 @@ func TestEndpointsFromEnv(t *testing.T) {
 		{
 			name: "Single endpoint - sub-route",
 			env: map[string]string{
+				//nolint:lll // checks might become rather long lines
 				fmt.Sprintf("%s_READINESS_REDIS", config.EndpointKeyPrefix): `redis.PING("local_redis");redis.GET("local_redis", "serving") => String("ok")`,
 			},
 			want: td.Map(make(map[config.Route]config.EndpointSpec), td.MapEntries{

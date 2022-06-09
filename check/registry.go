@@ -39,6 +39,7 @@ func (r *Registry) Register(module *Module) error {
 	return nil
 }
 
+//nolint:ireturn // required to implement interface
 func (r *Registry) Lookup(modName string) (CheckerLookup, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()

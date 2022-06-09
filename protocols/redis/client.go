@@ -10,6 +10,7 @@ import (
 	"github.com/baez90/nurse/grammar"
 )
 
+//nolint:ireturn // no other choice
 func clientFromParam(p grammar.Param, srvLookup config.ServerLookup) (redis.UniversalClient, error) {
 	if srvName, err := p.AsString(); err != nil {
 		return nil, err
@@ -22,6 +23,7 @@ func clientFromParam(p grammar.Param, srvLookup config.ServerLookup) (redis.Univ
 	}
 }
 
+//nolint:ireturn // no other choice
 func ClientForServer(srv *config.Server) (redis.UniversalClient, error) {
 	opts := &redis.UniversalOptions{
 		Addrs: srv.Hosts,

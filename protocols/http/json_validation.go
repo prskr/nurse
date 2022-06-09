@@ -17,12 +17,16 @@ type JSONPathValidator struct {
 	validator *validation.JSONPathValidator
 }
 
-func (j *JSONPathValidator) UnmarshalCall(c grammar.Call) (err error) {
-	if err = grammar.ValidateParameterCount(c.Params, 2); err != nil {
+func (j *JSONPathValidator) UnmarshalCall(c grammar.Call) error {
+	const pathAndWantArgsCount = 2
+	if err := grammar.ValidateParameterCount(c.Params, pathAndWantArgsCount); err != nil {
 		return err
 	}
 
-	var jsonPath string
+	var (
+		jsonPath string
+		err      error
+	)
 
 	if jsonPath, err = c.Params[0].AsString(); err != nil {
 		return err
@@ -41,7 +45,7 @@ func (j *JSONPathValidator) UnmarshalCall(c grammar.Call) (err error) {
 		return errors.New("param type unknown")
 	}
 
-	return nil
+	return err
 }
 
 func (j *JSONPathValidator) Validate(resp *http.Response) error {

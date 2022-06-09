@@ -35,7 +35,6 @@ func main() {
 		config.WithServersFromEnv(),
 		config.WithEndpointsFromEnv(),
 	)
-
 	if err != nil {
 		logger.Fatal("Failed to load config from environment", zap.Error(err))
 	}

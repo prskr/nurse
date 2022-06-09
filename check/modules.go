@@ -27,10 +27,12 @@ func (f ModuleOptionFunc) Apply(m *Module) error {
 	return f(m)
 }
 
+//nolint:ireturn // required to implement interface
 func (f FactoryFunc) New() SystemChecker {
 	return f()
 }
 
+//nolint:ireturn // required to implement interface
 func WithCheck(name string, factory Factory) ModuleOption {
 	return ModuleOptionFunc(func(m *Module) error {
 		return m.Register(name, factory)
@@ -62,6 +64,7 @@ func (m *Module) Name() string {
 	return m.name
 }
 
+//nolint:ireturn // required to implement interface
 func (m *Module) Lookup(c grammar.Check, srvLookup config.ServerLookup) (SystemChecker, error) {
 	m.lock.RLock()
 	defer m.lock.RUnlock()

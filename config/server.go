@@ -104,7 +104,7 @@ func (s *Server) UnmarshalURL(rawUrl string) error {
 		if err != nil {
 			return err
 		}
-		if err = s.unmarshalPath(parsedUrl); err != nil {
+		if err := s.unmarshalPath(parsedUrl); err != nil {
 			return err
 		}
 	} else {

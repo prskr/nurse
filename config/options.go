@@ -7,6 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
+//nolint:ireturn // required for interface implementation
 func WithServersFromEnv() Option {
 	return OptionFunc(func(n Nurse) (Nurse, error) {
 		envServers, err := ServersFromEnv()
@@ -29,6 +30,7 @@ func WithServersFromEnv() Option {
 	})
 }
 
+//nolint:ireturn // required for interface implementation
 func WithEndpointsFromEnv() Option {
 	return OptionFunc(func(n Nurse) (Nurse, error) {
 		envEndpoints, err := EndpointsFromEnv()
@@ -51,12 +53,14 @@ func WithEndpointsFromEnv() Option {
 	})
 }
 
+//nolint:ireturn // required for interface implementation
 func WithValuesFrom(other Nurse) Option {
 	return OptionFunc(func(n Nurse) (Nurse, error) {
 		return n.Merge(other), nil
 	})
 }
 
+//nolint:ireturn // required to implement interface
 func WithConfigFile(configFilePath string) Option {
 	logger := zap.L()
 	return OptionFunc(func(n Nurse) (Nurse, error) {

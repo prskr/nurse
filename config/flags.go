@@ -21,6 +21,7 @@ func ConfigureFlags(cfg *Nurse) *flag.FlagSet {
 	return set
 }
 
+//nolint:ireturn // false positive
 func LookupEnvOr[T any](envKey string, fallback T, parse func(envVal string) (T, error)) T {
 	envVal := os.Getenv(envKey)
 	if envVal == "" {
@@ -34,6 +35,7 @@ func LookupEnvOr[T any](envKey string, fallback T, parse func(envVal string) (T,
 	}
 }
 
+//nolint:ireturn // false positive
 func Identity[T any](in T) (T, error) {
 	return in, nil
 }
