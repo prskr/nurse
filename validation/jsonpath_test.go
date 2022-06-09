@@ -11,13 +11,14 @@ type jsonPathValidator_EqualsTestCase[V validation.Value] struct {
 	expected V
 	jsonPath string
 	json     string
-	want     bool
+	wantErr  bool
 }
 
 func (tt jsonPathValidator_EqualsTestCase[V]) name() string {
 	return tt.testName
 }
 
+//nolint:thelper // is not a helper
 func (tt jsonPathValidator_EqualsTestCase[V]) run(t *testing.T) {
 	t.Parallel()
 	t.Helper()
@@ -26,8 +27,10 @@ func (tt jsonPathValidator_EqualsTestCase[V]) run(t *testing.T) {
 		t.Fatalf("JSONPathValidatorFor() err = %v", err)
 	}
 
-	if validator.Equals(tt.json) != tt.want {
-		t.Errorf("Failed to equal value in %s to %v", tt.json, tt.expected)
+	if err := validator.Equals(tt.json); err != nil {
+		if !tt.wantErr {
+			t.Errorf("Failed to equal value in %s to %v: %v", tt.json, tt.expected, err)
+		}
 	}
 }
 
@@ -39,42 +42,42 @@ func TestJSONPathValidator_Equals(t *testing.T) {
 			expected: "hello",
 			jsonPath: "$.greeting",
 			json:     `{"greeting": "hello"}`,
-			want:     true,
+			wantErr:  false,
 		},
 		jsonPathValidator_EqualsTestCase[string]{
 			testName: "Simple object navigation - number as string",
 			expected: "42",
 			jsonPath: "$.number",
 			json:     `{"number": 42}`,
-			want:     true,
+			wantErr:  false,
 		},
 		jsonPathValidator_EqualsTestCase[string]{
 			testName: "Simple array navigation",
 			expected: "world",
 			jsonPath: "$[1]",
 			json:     `["hello", "world"]`,
-			want:     true,
+			wantErr:  false,
 		},
 		jsonPathValidator_EqualsTestCase[int]{
 			testName: "Simple array navigation - string to int",
 			expected: 37,
 			jsonPath: "$[1]",
 			json:     `["13", "37"]`,
-			want:     true,
+			wantErr:  false,
 		},
 		jsonPathValidator_EqualsTestCase[int]{
 			testName: "Simple array navigation - string to int - wrong value",
 			expected: 42,
 			jsonPath: "$[1]",
 			json:     `["13", "37"]`,
-			want:     false,
+			wantErr:  true,
 		},
 		jsonPathValidator_EqualsTestCase[string]{
 			testName: "Simple array navigation - int to string",
 			expected: "37",
 			jsonPath: "$[1]",
 			json:     `[13, 37]`,
-			want:     true,
+			wantErr:  false,
 		},
 	}
 	//nolint:paralleltest

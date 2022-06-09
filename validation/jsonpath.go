@@ -26,14 +26,14 @@ type JSONPathValidator struct {
 	Comparator ValueComparator
 }
 
-func (j JSONPathValidator) Equals(got any) bool {
+func (j JSONPathValidator) Equals(got any) error {
 	parsed, err := parse(got)
 	if err != nil {
-		return false
+		return err
 	}
 	val, err := jsonpath.Get(j.Path, parsed)
 	if err != nil {
-		return false
+		return err
 	}
 
 	return j.Comparator.Equals(val)

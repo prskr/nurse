@@ -78,7 +78,7 @@ linters:
     - funlen
     - gocognit
     - goconst
-    # - gocritic
+    - gocritic
     - gocyclo
     - godox
     - gofumpt
@@ -86,12 +86,12 @@ linters:
     - gomoddirectives
     - gomnd
     - gosec
-    - gosimple
+    # - gosimple
     - govet
     - ifshort
     - importas
     - ineffassign
-    # - ireturn - enable later
+    - ireturn
     - lll
     - misspell
     - nakedret
@@ -99,13 +99,14 @@ linters:
     - nilnil
     - noctx
     - nolintlint
+    - nosprintfhostport
     - paralleltest
     - prealloc
     - predeclared
     - promlinter
-    - staticcheck
+    # - staticcheck
     - structcheck
-    - stylecheck
+    # - stylecheck
     - tenv
     - testpackage
     - thelper

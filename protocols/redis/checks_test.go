@@ -90,9 +90,6 @@ func TestChecks_Execute(t *testing.T) {
 			chk, err := redisModule.Lookup(*parsedCheck, register)
 			td.CmpNoError(t, err, "redis.LookupCheck()")
 
-			td.CmpNoError(t, chk.UnmarshalCheck(*parsedCheck, register), "get.UnmarshalCheck()")
-			td.CmpNoError(t, chk.Execute(context.Background()))
-
 			if tt.wantErr {
 				td.CmpError(t, chk.Execute(context.Background()))
 			} else {

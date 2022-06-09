@@ -9,13 +9,14 @@ import (
 	"github.com/baez90/nurse/check"
 	"github.com/baez90/nurse/config"
 	"github.com/baez90/nurse/grammar"
+	"github.com/baez90/nurse/validation"
 )
 
 var _ check.SystemChecker = (*PingCheck)(nil)
 
 type PingCheck struct {
 	redis.UniversalClient
-	validators ValidationChain
+	validators validation.Validator[redis.Cmder]
 	Message    string
 }
 
@@ -39,7 +40,11 @@ func (p *PingCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) 
 	)
 
 	val, _ := GenericCommandValidatorFor("PONG")
-	p.validators = append(p.validators, val)
+
+	validators := validation.Chain[redis.Cmder]{}
+	validators = append(validators, val)
+
+	p.validators = validators
 
 	init := c.Initiator
 	switch len(init.Params) {
@@ -50,7 +55,7 @@ func (p *PingCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) 
 			return err
 		} else {
 			val, _ := GenericCommandValidatorFor(msg)
-			p.validators = ValidationChain{val}
+			p.validators = validation.Chain[redis.Cmder]{val}
 		}
 		fallthrough
 	case serverOnlyArgCount:

@@ -2,74 +2,27 @@ package redis
 
 import (
 	"errors"
-	"fmt"
-	"strings"
 
 	"github.com/go-redis/redis/v8"
 
-	"github.com/baez90/nurse/check"
 	"github.com/baez90/nurse/grammar"
 	"github.com/baez90/nurse/validation"
 )
 
 var (
-	ErrNoSuchValidator = errors.New("no such validator")
-
-	_ CmdValidator = (ValidationChain)(nil)
 	_ CmdValidator = (*GenericCmdValidator)(nil)
 
-	knownValidators = map[string]func() unmarshallableCmdValidator{
-		"equals": func() unmarshallableCmdValidator {
-			return new(GenericCmdValidator)
-		},
-	}
+	registry = validation.NewRegistry[redis.Cmder]()
 )
 
-type (
-	CmdValidator interface {
-		Validate(cmder redis.Cmder) error
-	}
-	unmarshallableCmdValidator interface {
-		CmdValidator
-		check.CallUnmarshaler
-	}
-)
-
-func ValidatorsForFilters(filters *grammar.Filters) (ValidationChain, error) {
-	if filters == nil || filters.Chain == nil {
-		return ValidationChain{}, nil
-	}
-	chain := make(ValidationChain, 0, len(filters.Chain))
-	for i := range filters.Chain {
-		validationCall := filters.Chain[i]
-		if validatorProvider, ok := knownValidators[strings.ToLower(validationCall.Name)]; !ok {
-			return nil, fmt.Errorf("%w: %s", ErrNoSuchValidator, validationCall.Name)
-		} else {
-			validator := validatorProvider()
-			if err := validator.UnmarshalCall(validationCall); err != nil {
-				return nil, err
-			}
-			chain = append(chain, validator)
-		}
-	}
-
-	return chain, nil
+func init() {
+	registry.Register("equals", func() validation.FromCall[redis.Cmder] {
+		return new(GenericCmdValidator)
+	})
 }
 
-type ValidationChain []CmdValidator
-
-func (v ValidationChain) UnmarshalCall(grammar.Call) error {
-	return errors.New("cannot unmarshal chain")
-}
-
-func (v ValidationChain) Validate(cmder redis.Cmder) error {
-	for i := range v {
-		if err := v[i].Validate(cmder); err != nil {
-			return err
-		}
-	}
-
-	return nil
+type CmdValidator interface {
+	Validate(cmder redis.Cmder) error
 }
 
 func GenericCommandValidatorFor[T validation.Value](want T) (*GenericCmdValidator, error) {
@@ -92,7 +45,6 @@ func (g *GenericCmdValidator) UnmarshalCall(c grammar.Call) error {
 	}
 
 	var err error
-
 	switch c.Params[0].Type() {
 	case grammar.ParamTypeInt:
 		if g.comparator, err = validation.JSONValueComparatorFor(*c.Params[0].Int); err != nil {
@@ -107,13 +59,13 @@ func (g *GenericCmdValidator) UnmarshalCall(c grammar.Call) error {
 			return err
 		}
 	default:
-		return fmt.Errorf("param type is unkown")
+		return errors.New("param type is unknown")
 	}
 
 	return nil
 }
 
-func (g GenericCmdValidator) Validate(cmder redis.Cmder) error {
+func (g *GenericCmdValidator) Validate(cmder redis.Cmder) error {
 	if err := cmder.Err(); err != nil {
 		return err
 	}
@@ -124,9 +76,8 @@ func (g GenericCmdValidator) Validate(cmder redis.Cmder) error {
 		if err != nil {
 			return err
 		}
-		if !g.comparator.Equals(res) {
-			return fmt.Errorf("got %s - but didn't match expected value", res)
-		}
+
+		return g.comparator.Equals(res)
 	}
 
 	return nil

@@ -43,7 +43,7 @@ func main() {
 	logger.Debug("Loaded config", zap.Any("config", nurseInstance))
 
 	chkRegistry := check.NewRegistry()
-	if err := chkRegistry.Register(redis.Module()); err != nil {
+	if err = chkRegistry.Register(redis.Module()); err != nil {
 		logger.Fatal("Failed to register Redis module", zap.Error(err))
 	}
 

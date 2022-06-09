@@ -11,6 +11,7 @@ import (
 var (
 	ErrNoSuchCheck      = errors.New("no such check")
 	ErrConflictingCheck = errors.New("check with same name already registered")
+	ErrNoSuchValidator  = errors.New("no such validator")
 )
 
 type (

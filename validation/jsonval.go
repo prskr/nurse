@@ -47,6 +47,6 @@ type JSONValueComparator struct {
 	Comparator ValueComparator
 }
 
-func (j JSONValueComparator) Equals(got any) bool {
+func (j JSONValueComparator) Equals(got any) error {
 	return j.Comparator.Equals(got)
 }

@@ -8,13 +8,14 @@ import (
 	"github.com/baez90/nurse/check"
 	"github.com/baez90/nurse/config"
 	"github.com/baez90/nurse/grammar"
+	"github.com/baez90/nurse/validation"
 )
 
 var _ check.SystemChecker = (*GetCheck)(nil)
 
 type GetCheck struct {
 	redis.UniversalClient
-	validators ValidationChain
+	validators validation.Validator[redis.Cmder]
 	Key        string
 }
 
@@ -44,7 +45,7 @@ func (g *GetCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) e
 		return err
 	}
 
-	if g.validators, err = ValidatorsForFilters(c.Validators); err != nil {
+	if g.validators, err = registry.ValidatorsForFilters(c.Validators); err != nil {
 		return err
 	}
 
