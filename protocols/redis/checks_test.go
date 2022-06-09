@@ -37,7 +37,7 @@ func TestChecks_Execute(t *testing.T) {
 		},
 		{
 			name:  "Get value - validate value",
-			check: `redis.GET("%s", "some_key") => String("some_value")`,
+			check: `redis.GET("%s", "some_key") => Equals("some_value")`,
 			setup: func(tb testing.TB, cli redisCli.UniversalClient) {
 				tb.Helper()
 				td.CmpNoError(tb, cli.Set(context.Background(), "some_key", "some_value", 0).Err())

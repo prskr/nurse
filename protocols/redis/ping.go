@@ -38,7 +38,8 @@ func (p *PingCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) 
 		serverAndMessageArgCount = 2
 	)
 
-	p.validators = append(p.validators, StringCmdValidator("PONG"))
+	val, _ := GenericCommandValidatorFor("PONG")
+	p.validators = append(p.validators, val)
 
 	init := c.Initiator
 	switch len(init.Params) {
@@ -48,7 +49,8 @@ func (p *PingCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) 
 		if msg, err := init.Params[1].AsString(); err != nil {
 			return err
 		} else {
-			p.validators = ValidationChain{StringCmdValidator(msg)}
+			val, _ := GenericCommandValidatorFor(msg)
+			p.validators = ValidationChain{val}
 		}
 		fallthrough
 	case serverOnlyArgCount:
