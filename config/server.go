@@ -16,6 +16,8 @@ type ServerType uint
 const (
 	ServerTypeUnspecified ServerType = iota
 	ServerTypeRedis
+	ServerTypePostgres
+	ServerTypeMysql
 
 	//nolint:lll // cannot break regex
 	// language=regexp
@@ -26,10 +28,29 @@ func (t ServerType) Scheme() string {
 	switch t {
 	case ServerTypeRedis:
 		return "redis"
+	case ServerTypePostgres:
+		return "postgres"
+	case ServerTypeMysql:
+		return "mysql"
 	case ServerTypeUnspecified:
 		fallthrough
 	default:
 		return "unknown"
+	}
+}
+
+func (t ServerType) Driver() string {
+	switch t {
+	case ServerTypeRedis:
+		return "redis"
+	case ServerTypePostgres:
+		return "pgx"
+	case ServerTypeMysql:
+		return "mysql"
+	case ServerTypeUnspecified:
+		fallthrough
+	default:
+		return ""
 	}
 }
 
@@ -38,6 +59,19 @@ var hostsRegexp = regexp.MustCompile(urlSchemeRegex)
 type Credentials struct {
 	Username string
 	Password *string
+}
+
+func (c *Credentials) appendToBuilder(builder *strings.Builder) {
+	if c == nil {
+		return
+	}
+
+	_, _ = builder.WriteString(c.Username)
+	if c.Password != nil {
+		_, _ = builder.WriteString(":")
+		_, _ = builder.WriteString(*c.Password)
+	}
+	_, _ = builder.WriteString("@")
 }
 
 var (
@@ -58,6 +92,86 @@ type Server struct {
 	Hosts       []string
 	Path        []string
 	Args        map[string]any
+}
+
+func (s *Server) Query() string {
+	if s.Args == nil || len(s.Args) < 1 {
+		return ""
+	}
+
+	var builder strings.Builder
+
+	for k, v := range s.Args {
+		if builder.Len() > 0 {
+			_, _ = builder.WriteString("&")
+		}
+		_, _ = builder.WriteString(k)
+		_, _ = builder.WriteString("=")
+		_, _ = builder.WriteString(fmt.Sprintf("%v", v))
+	}
+
+	return builder.String()
+}
+
+func (s *Server) DSNs() (result []string) {
+	var builder strings.Builder
+	result = make([]string, 0, len(s.Hosts))
+	joinedPath := strings.Join(s.Path, "/")
+
+	for i := range s.Hosts {
+		builder.Reset()
+		s.Credentials.appendToBuilder(&builder)
+
+		_, _ = builder.WriteString("tcp(")
+		_, _ = builder.WriteString(s.Hosts[i])
+		_, _ = builder.WriteString(")")
+
+		if len(s.Path) > 0 {
+			_, _ = builder.WriteString("/")
+
+			_, _ = builder.WriteString(joinedPath)
+		}
+
+		if query := s.Query(); query != "" {
+			_, _ = builder.WriteString("?")
+			_, _ = builder.WriteString(query)
+		}
+
+		result = append(result, builder.String())
+	}
+
+	return result
+}
+
+func (s *Server) ConnectionStrings() (result []string) {
+	var builder strings.Builder
+	result = make([]string, 0, len(s.Hosts))
+	joinedPath := strings.Join(s.Path, "/")
+
+	for i := range s.Hosts {
+		builder.Reset()
+
+		_, _ = builder.WriteString(s.Type.Scheme())
+		_, _ = builder.WriteString("://")
+
+		s.Credentials.appendToBuilder(&builder)
+
+		_, _ = builder.WriteString(s.Hosts[i])
+		if len(s.Path) > 0 {
+			_, _ = builder.WriteString("/")
+
+			_, _ = builder.WriteString(joinedPath)
+		}
+
+		if query := s.Query(); query != "" {
+			_, _ = builder.WriteString("?")
+			_, _ = builder.WriteString(query)
+		}
+
+		result = append(result, builder.String())
+	}
+
+	return result
 }
 
 func (s *Server) UnmarshalYAML(value *yaml.Node) error {

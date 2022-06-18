@@ -19,7 +19,7 @@ type GetCheck struct {
 	Key        string
 }
 
-func (g GetCheck) Execute(ctx context.Context) error {
+func (g *GetCheck) Execute(ctx context.Context) error {
 	cmd := g.Get(ctx, g.Key)
 
 	if err := cmd.Err(); err != nil {

@@ -5,7 +5,7 @@ import (
 )
 
 func Module() *check.Module {
-	m, _ := check.NewModule(
+	m, err := check.NewModule(
 		"redis",
 		check.WithCheck("ping", check.FactoryFunc(func() check.SystemChecker {
 			return new(PingCheck)
@@ -14,6 +14,10 @@ func Module() *check.Module {
 			return new(GetCheck)
 		})),
 	)
+
+	if err != nil {
+		panic(err)
+	}
 
 	return m
 }

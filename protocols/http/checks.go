@@ -7,7 +7,7 @@ import (
 )
 
 func Module() *check.Module {
-	m, _ := check.NewModule(
+	m, err := check.NewModule(
 		"http",
 		check.WithCheck("get", check.FactoryFunc(func() check.SystemChecker {
 			return &GenericCheck{Method: http.MethodGet}
@@ -22,6 +22,10 @@ func Module() *check.Module {
 			return &GenericCheck{Method: http.MethodDelete}
 		})),
 	)
+
+	if err != nil {
+		panic(err)
+	}
 
 	return m
 }
