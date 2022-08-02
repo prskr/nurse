@@ -5,8 +5,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/baez90/nurse/check"
-	"github.com/baez90/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/check"
+	"code.1533b4dc0.de/prskr/nurse/config"
 )
 
 func PrepareMux(instance *config.Nurse, modLookup check.ModuleLookup, srvLookup config.ServerLookup) (http.Handler, error) {

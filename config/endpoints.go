@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/baez90/nurse/grammar"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
 )
 
 type Route string

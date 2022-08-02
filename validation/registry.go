@@ -5,8 +5,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/baez90/nurse/check"
-	"github.com/baez90/nurse/grammar"
+	"code.1533b4dc0.de/prskr/nurse/check"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
 )
 
 type (

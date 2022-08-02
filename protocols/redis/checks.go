@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"github.com/baez90/nurse/check"
+	"code.1533b4dc0.de/prskr/nurse/check"
 )
 
 func Module() *check.Module {

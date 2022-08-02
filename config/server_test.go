@@ -5,8 +5,8 @@ import (
 
 	"github.com/maxatome/go-testdeep/td"
 
-	"github.com/baez90/nurse/config"
-	"github.com/baez90/nurse/internal/values"
+	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/internal/values"
 )
 
 func TestParseFromURL(t *testing.T) {

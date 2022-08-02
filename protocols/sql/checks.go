@@ -1,6 +1,6 @@
 package sql
 
-import "github.com/baez90/nurse/check"
+import "code.1533b4dc0.de/prskr/nurse/check"
 
 func Module() *check.Module {
 	m, err := check.NewModule(

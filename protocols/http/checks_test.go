@@ -11,8 +11,8 @@ import (
 
 	"github.com/maxatome/go-testdeep/td"
 
-	"github.com/baez90/nurse/grammar"
-	httpcheck "github.com/baez90/nurse/protocols/http"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
+	httpcheck "code.1533b4dc0.de/prskr/nurse/protocols/http"
 )
 
 func TestChecks_Execute(t *testing.T) {

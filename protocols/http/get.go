@@ -6,10 +6,10 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/baez90/nurse/check"
-	"github.com/baez90/nurse/config"
-	"github.com/baez90/nurse/grammar"
-	"github.com/baez90/nurse/validation"
+	"code.1533b4dc0.de/prskr/nurse/check"
+	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
+	"code.1533b4dc0.de/prskr/nurse/validation"
 )
 
 type ClientInjectable interface {

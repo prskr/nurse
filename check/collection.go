@@ -5,8 +5,8 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/baez90/nurse/config"
-	"github.com/baez90/nurse/grammar"
+	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
 )
 
 var _ SystemChecker = Collection(nil)

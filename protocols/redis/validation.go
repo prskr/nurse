@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-redis/redis/v8"
 
-	"github.com/baez90/nurse/grammar"
-	"github.com/baez90/nurse/validation"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
+	"code.1533b4dc0.de/prskr/nurse/validation"
 )
 
 var (

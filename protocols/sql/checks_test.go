@@ -9,9 +9,9 @@ import (
 
 	"github.com/maxatome/go-testdeep/td"
 
-	"github.com/baez90/nurse/config"
-	"github.com/baez90/nurse/grammar"
-	sqlchk "github.com/baez90/nurse/protocols/sql"
+	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
+	sqlchk "code.1533b4dc0.de/prskr/nurse/protocols/sql"
 )
 
 func TestChecks_Execute(t *testing.T) {

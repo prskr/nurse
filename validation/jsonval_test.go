@@ -3,7 +3,7 @@ package validation_test
 import (
 	"testing"
 
-	"github.com/baez90/nurse/validation"
+	"code.1533b4dc0.de/prskr/nurse/validation"
 )
 
 type testCase interface {

@@ -9,10 +9,10 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/baez90/nurse/api"
-	"github.com/baez90/nurse/check"
-	"github.com/baez90/nurse/config"
-	"github.com/baez90/nurse/protocols/redis"
+	"code.1533b4dc0.de/prskr/nurse/api"
+	"code.1533b4dc0.de/prskr/nurse/check"
+	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/protocols/redis"
 )
 
 var (

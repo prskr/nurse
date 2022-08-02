@@ -11,8 +11,8 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	"github.com/baez90/nurse/config"
-	"github.com/baez90/nurse/internal/values"
+	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/internal/values"
 )
 
 const (

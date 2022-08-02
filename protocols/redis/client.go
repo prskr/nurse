@@ -6,8 +6,8 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/mitchellh/mapstructure"
 
-	"github.com/baez90/nurse/config"
-	"github.com/baez90/nurse/grammar"
+	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
 )
 
 //nolint:ireturn // no other choice

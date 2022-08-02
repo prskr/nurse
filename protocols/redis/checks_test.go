@@ -10,9 +10,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/maxatome/go-testdeep/td"
 
-	"github.com/baez90/nurse/config"
-	"github.com/baez90/nurse/grammar"
-	"github.com/baez90/nurse/protocols/redis"
+	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.1533b4dc0.de/prskr/nurse/grammar"
+	"code.1533b4dc0.de/prskr/nurse/protocols/redis"
 )
 
 func TestChecks_Execute(t *testing.T) {

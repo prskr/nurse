@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/baez90/nurse/check"
+	"code.1533b4dc0.de/prskr/nurse/check"
 )
 
 var _ http.Handler = (*CheckHandler)(nil)
