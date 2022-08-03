@@ -1,0 +1,14 @@
+version: v0
+runs:
+  - name: Build
+    tasks:
+      - name: Test
+        runtime:
+          type: pod
+          containers:
+            - image: docker.io/golang:1.19-bullseye
+        steps:
+          - clone:
+          - run:
+              name: run all tests
+              command: go test ./...
