@@ -26,7 +26,7 @@ func PreparePostgresContainer(tb testing.TB) (name string, cfg *config.Server) {
 
 	const postgresPort = "5432/tcp"
 
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	tb.Cleanup(cancel)
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -77,7 +77,7 @@ func PrepareMariaDBContainer(tb testing.TB) (name string, cfg *config.Server) {
 
 	const mysqlPort = "3306/tcp"
 
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	tb.Cleanup(cancel)
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
