@@ -19,7 +19,23 @@ type GetCheck struct {
 	Key        string
 }
 
-func (g *GetCheck) Execute(ctx context.Context) error {
+func (g *GetCheck) Execute(ctx check.Context) error {
+	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			attemptCtx, cancel := ctx.AttemptContext()
+			err := g.executeAttempt(attemptCtx)
+			cancel()
+			if err == nil {
+				return nil
+			}
+		}
+	}
+}
+
+func (g *GetCheck) executeAttempt(ctx context.Context) error {
 	cmd := g.Get(ctx, g.Key)
 
 	if err := cmd.Err(); err != nil {

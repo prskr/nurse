@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	redisCli "github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
 	"github.com/maxatome/go-testdeep/td"
 
+	"code.1533b4dc0.de/prskr/nurse/check"
 	"code.1533b4dc0.de/prskr/nurse/config"
 	"code.1533b4dc0.de/prskr/nurse/grammar"
 	"code.1533b4dc0.de/prskr/nurse/protocols/redis"
@@ -90,10 +92,13 @@ func TestChecks_Execute(t *testing.T) {
 			chk, err := redisModule.Lookup(*parsedCheck, register)
 			td.CmpNoError(t, err, "redis.LookupCheck()")
 
+			ctx, cancel := check.AttemptsContext(context.Background(), 100, 500*time.Millisecond)
+			t.Cleanup(cancel)
+
 			if tt.wantErr {
-				td.CmpError(t, chk.Execute(context.Background()))
+				td.CmpError(t, chk.Execute(ctx))
 			} else {
-				td.CmpNoError(t, chk.Execute(context.Background()))
+				td.CmpNoError(t, chk.Execute(ctx))
 			}
 		})
 	}

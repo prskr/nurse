@@ -2,7 +2,6 @@ package http
 
 import (
 	"bytes"
-	"context"
 	"io"
 	"net/http"
 
@@ -37,7 +36,8 @@ func (g *GenericCheck) SetClient(client *http.Client) {
 	g.Client = client
 }
 
-func (g *GenericCheck) Execute(ctx context.Context) error {
+func (g *GenericCheck) Execute(ctx check.Context) error {
+	//TODO adopt
 	var body io.Reader
 	if len(g.Body) > 0 {
 		body = bytes.NewReader(g.Body)

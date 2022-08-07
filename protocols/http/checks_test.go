@@ -8,9 +8,11 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/maxatome/go-testdeep/td"
 
+	"code.1533b4dc0.de/prskr/nurse/check"
 	"code.1533b4dc0.de/prskr/nurse/grammar"
 	httpcheck "code.1533b4dc0.de/prskr/nurse/protocols/http"
 )
@@ -134,10 +136,13 @@ func TestChecks_Execute(t *testing.T) {
 				clientInjectable.SetClient(testServer.Client())
 			}
 
+			ctx, cancel := check.AttemptsContext(context.Background(), 100, 100*time.Millisecond)
+			t.Cleanup(cancel)
+
 			if tt.wantErr {
-				td.CmpError(t, chk.Execute(context.Background()))
+				td.CmpError(t, chk.Execute(ctx))
 			} else {
-				td.CmpNoError(t, chk.Execute(context.Background()))
+				td.CmpNoError(t, chk.Execute(ctx))
 			}
 		})
 	}

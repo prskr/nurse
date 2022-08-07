@@ -38,12 +38,7 @@ func PreparePostgresContainer(tb testing.TB) (name string, cfg *config.Server) {
 				"POSTGRES_PASSWORD": dbPassword,
 				"POSTGRES_DB":       dbName,
 			},
-			WaitingFor: wait.ForAll(
-				wait.ForListeningPort(postgresPort),
-				/*wait.ForSQL(postgresPort, "pgx", func(port nat.Port) string {
-					return fmt.Sprintf("postgres://%s:%s@localhost:%d/%s", dbUser, dbPassword, port.Int(), dbName)
-				}),*/
-			),
+			WaitingFor: wait.ForListeningPort(postgresPort),
 		},
 		Started: true,
 		Logger:  testcontainers.TestLogger(tb),
@@ -93,12 +88,7 @@ func PrepareMariaDBContainer(tb testing.TB) (name string, cfg *config.Server) {
 				"MARIADB_RANDOM_ROOT_PASSWORD": "1",
 				"MARIADB_DATABASE":             dbName,
 			},
-			WaitingFor: wait.ForAll(
-				wait.ForListeningPort(mysqlPort),
-				/*				wait.ForSQL(mysqlPort, "mysql", func(port nat.Port) string {
-								return fmt.Sprintf("%s:%s@tcp(localhost:%d)/%s", dbUser, dbPassword, port.Int(), dbName)
-							}),*/
-			),
+			WaitingFor: wait.ForListeningPort(mysqlPort),
 		},
 		Started: true,
 		Logger:  testcontainers.TestLogger(tb),

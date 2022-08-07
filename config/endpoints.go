@@ -19,13 +19,22 @@ func (r Route) String() string {
 }
 
 type EndpointSpec struct {
-	CheckTimeout time.Duration
-	Checks       []grammar.Check
+	CheckTimeout  time.Duration
+	CheckAttempts uint
+	Checks        []grammar.Check
 }
 
 func (s EndpointSpec) Timeout(fallback time.Duration) time.Duration {
 	if s.CheckTimeout != 0 {
 		return s.CheckTimeout
+	}
+
+	return fallback
+}
+
+func (s EndpointSpec) Attempts(fallback uint) uint {
+	if s.CheckAttempts != 0 {
+		return s.CheckAttempts
 	}
 
 	return fallback

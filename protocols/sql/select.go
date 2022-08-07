@@ -43,7 +43,23 @@ func (s *SelectCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup
 	return nil
 }
 
-func (s *SelectCheck) Execute(ctx context.Context) (err error) {
+func (s *SelectCheck) Execute(ctx check.Context) error {
+	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			attemptCtx, cancel := ctx.AttemptContext()
+			err := s.executeAttempt(attemptCtx)
+			cancel()
+			if err == nil {
+				return nil
+			}
+		}
+	}
+}
+
+func (s *SelectCheck) executeAttempt(ctx context.Context) (err error) {
 	var rows *sql.Rows
 	rows, err = s.QueryContext(ctx, s.Query)
 	if err != nil {

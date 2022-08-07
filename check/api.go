@@ -19,9 +19,15 @@ type (
 		UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) error
 	}
 
+	Context interface {
+		context.Context
+		AttemptContext() (context.Context, context.CancelFunc)
+		WithParent(ctx context.Context) Context
+	}
+
 	SystemChecker interface {
 		Unmarshaler
-		Execute(ctx context.Context) error
+		Execute(ctx Context) error
 	}
 
 	CallUnmarshaler interface {

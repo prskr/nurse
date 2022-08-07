@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/wait"
 
 	"code.1533b4dc0.de/prskr/nurse/config"
 )
@@ -24,6 +25,7 @@ func PrepareRedisContainer(tb testing.TB) *config.Server {
 			ExposedPorts: []string{redisPort},
 			SkipReaper:   true,
 			AutoRemove:   true,
+			WaitingFor:   wait.ForListeningPort(redisPort),
 		},
 		Started: true,
 		Logger:  testcontainers.TestLogger(tb),

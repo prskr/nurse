@@ -20,10 +20,27 @@ type PingCheck struct {
 	Message    string
 }
 
-func (p PingCheck) Execute(ctx context.Context) error {
+func (p PingCheck) Execute(ctx check.Context) error {
 	if p.Message == "" {
 		return p.Ping(ctx).Err()
 	}
+
+	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			attemptCtx, cancel := ctx.AttemptContext()
+			err := p.executeAttempt(attemptCtx)
+			cancel()
+			if err == nil {
+				return nil
+			}
+		}
+	}
+}
+
+func (p PingCheck) executeAttempt(ctx context.Context) error {
 	if resp, err := p.Do(ctx, "PING", p.Message).Text(); err != nil {
 		return err
 	} else if resp != p.Message {

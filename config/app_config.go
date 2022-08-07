@@ -33,9 +33,10 @@ func New(opts ...Option) (*Nurse, error) {
 }
 
 type Nurse struct {
-	Servers      map[string]Server
-	Endpoints    map[Route]EndpointSpec
-	CheckTimeout time.Duration
+	Servers       map[string]Server
+	Endpoints     map[Route]EndpointSpec
+	CheckTimeout  time.Duration
+	CheckAttempts uint
 }
 
 func (n Nurse) ServerLookup() (*ServerRegister, error) {
@@ -55,6 +56,10 @@ func (n Nurse) ServerLookup() (*ServerRegister, error) {
 func (n Nurse) Merge(other Nurse) Nurse {
 	if n.CheckTimeout == 0 {
 		n.CheckTimeout = other.CheckTimeout
+	}
+
+	if n.CheckAttempts == 0 {
+		n.CheckAttempts = other.CheckAttempts
 	}
 
 	for name, srv := range other.Servers {

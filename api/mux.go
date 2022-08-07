@@ -22,8 +22,9 @@ func PrepareMux(instance *config.Nurse, modLookup check.ModuleLookup, srvLookup 
 		}
 
 		mux.Handle(route.String(), CheckHandler{
-			Timeout: spec.Timeout(instance.CheckTimeout),
-			Check:   chk,
+			Timeout:  spec.Timeout(instance.CheckTimeout),
+			Attempts: spec.Attempts(instance.CheckAttempts),
+			Check:    chk,
 		})
 	}
 
