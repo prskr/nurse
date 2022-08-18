@@ -24,8 +24,7 @@ func NewParser[T any]() (*Parser[T], error) {
 		return nil, err
 	}
 
-	grammarParser, err := participle.Build(
-		new(T),
+	grammarParser, err := participle.Build[T](
 		participle.Lexer(def),
 		participle.Unquote("String", "RawString"),
 		participle.Elide("Comment"),
@@ -38,23 +37,13 @@ func NewParser[T any]() (*Parser[T], error) {
 }
 
 type Parser[T any] struct {
-	grammarParser *participle.Parser
+	grammarParser *participle.Parser[T]
 }
 
 func (p Parser[T]) Parse(rawRule string) (*T, error) {
-	into := new(T)
-	if err := p.grammarParser.ParseString("", rawRule, into); err != nil {
-		return nil, err
-	}
-
-	return into, nil
+	return p.grammarParser.ParseString("", rawRule)
 }
 
 func (p Parser[T]) ParseBytes(data []byte) (*T, error) {
-	into := new(T)
-	if err := p.grammarParser.ParseBytes("", data, into); err != nil {
-		return nil, err
-	}
-
-	return into, nil
+	return p.grammarParser.ParseBytes("", data)
 }
