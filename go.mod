@@ -14,7 +14,7 @@ require (
 	github.com/testcontainers/testcontainers-go v0.13.0
 	github.com/valyala/bytebufferpool v1.0.0
 	go.uber.org/multierr v1.8.0
-	go.uber.org/zap v1.22.0
+	go.uber.org/zap v1.23.0
 	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
 	gopkg.in/yaml.v3 v3.0.1
