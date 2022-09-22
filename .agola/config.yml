@@ -9,7 +9,7 @@ runs:
             - image: docker.io/golang:1.19-bullseye
               environment:
                 DOCKER_HOST: tcp://127.0.0.1:2375
-            - image: europe-north1-docker.pkg.dev/b4dc0-355617/ci-images/dind:20.10
+            - image: code.icb4dc0.de/prskr/ci-images/dind:latest
               privileged: true
         steps:
           - clone:
