@@ -6,14 +6,9 @@ runs:
         runtime:
           type: pod
           containers:
-            - image: docker.io/golang:1.19-bullseye
-              environment:
-                GOMODCACHE: /project/.go
+            - image: docker.io/alpine/git
         steps:
           - clone:
-          - run:
-              name: Download Go dependencies
-              command: go mod tidy --go=1.19
           - save_to_workspace:
               contents:
                 - source_dir: .
@@ -26,7 +21,6 @@ runs:
           containers:
             - image: docker.io/golang:1.19-bullseye
               environment:
-                GOMODCACHE: /project/.go
                 DOCKER_HOST: tcp://127.0.0.1:2375
             - image: code.icb4dc0.de/prskr/ci-images/dind:latest
               privileged: true
@@ -49,7 +43,6 @@ runs:
           containers:
             - image: docker.io/golangci/golangci-lint
         environment:
-          GOMODCACHE: /project/.go
           GO111MODULE: "on"
           CGO_ENABLED: "0"
         steps:
