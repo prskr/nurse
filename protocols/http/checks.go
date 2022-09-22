@@ -22,7 +22,6 @@ func Module() *check.Module {
 			return &GenericCheck{Method: http.MethodDelete}
 		})),
 	)
-
 	if err != nil {
 		panic(err)
 	}

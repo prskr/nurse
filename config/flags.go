@@ -52,7 +52,9 @@ func Identity[T any](in T) (T, error) {
 }
 
 func parseUint(val string) (uint, error) {
-	parsed, err := strconv.ParseUint(val, 10, 32)
+	const baseDecimal = 10
+	const int32BitSize = 32
+	parsed, err := strconv.ParseUint(val, baseDecimal, int32BitSize)
 	if err != nil {
 		return 0, err
 	}

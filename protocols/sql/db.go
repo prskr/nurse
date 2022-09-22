@@ -36,10 +36,9 @@ func DBForServer(srv *config.Server) (*sql.DB, error) {
 		}
 
 		return sql.Open(srv.Type.Driver(), dsns[0])
-	case config.ServerTypeRedis:
+	case config.ServerTypeRedis, config.ServerTypeUnspecified:
 		fallthrough
 	default:
 		return nil, fmt.Errorf("unmatched server type for SQL DB: %s", srv.Type.Scheme())
 	}
-
 }

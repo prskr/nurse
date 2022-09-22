@@ -63,7 +63,7 @@ func TestChecks_Execute(t *testing.T) {
 					srvName, srv = PrepareMariaDBContainer(t)
 				case config.ServerTypePostgres:
 					srvName, srv = PreparePostgresContainer(t)
-				case config.ServerTypeRedis:
+				case config.ServerTypeRedis, config.ServerTypeUnspecified:
 					fallthrough
 				default:
 					t.Fatalf("unexpected server type: %s", st.Scheme())

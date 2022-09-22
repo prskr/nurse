@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -56,7 +57,13 @@ func main() {
 		logger.Fatal("Failed to prepare server mux", zap.Error(err))
 	}
 
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	srv := http.Server{
+		Addr:              ":8080",
+		Handler:           mux,
+		ReadHeaderTimeout: 100 * time.Millisecond,
+	}
+
+	if err := srv.ListenAndServe(); err != nil {
 		if errors.Is(err, http.ErrServerClosed) {
 			return
 		}

@@ -9,7 +9,6 @@ func Module() *check.Module {
 			return new(SelectCheck)
 		})),
 	)
-
 	if err != nil {
 		panic(err)
 	}

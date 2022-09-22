@@ -24,6 +24,7 @@ const (
 	urlSchemeRegex = `^(?P<scheme>\w+)://((?P<username>[\w-.]+)(:(?P<password>.*))?@)?(\{(?P<hosts>(.+:\d{1,5})(,(.+:\d{1,5}))*)}|(?P<host>.+:\d{1,5}))(?P<path>/.*$)?`
 )
 
+//nolint:goconst
 func (t ServerType) Scheme() string {
 	switch t {
 	case ServerTypeRedis:

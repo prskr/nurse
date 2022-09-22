@@ -14,7 +14,6 @@ func Module() *check.Module {
 			return new(GetCheck)
 		})),
 	)
-
 	if err != nil {
 		panic(err)
 	}
