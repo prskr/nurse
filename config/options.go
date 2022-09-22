@@ -30,7 +30,6 @@ func WithServersFromEnv() Option {
 	})
 }
 
-//nolint:ireturn // required for interface implementation
 func WithEndpointsFromEnv() Option {
 	return OptionFunc(func(n Nurse) (Nurse, error) {
 		envEndpoints, err := EndpointsFromEnv()
@@ -53,7 +52,6 @@ func WithEndpointsFromEnv() Option {
 	})
 }
 
-//nolint:ireturn // required for interface implementation
 func WithValuesFrom(other Nurse) Option {
 	return OptionFunc(func(n Nurse) (Nurse, error) {
 		return n.Merge(other), nil

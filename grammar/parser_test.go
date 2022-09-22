@@ -5,8 +5,8 @@ import (
 
 	"github.com/maxatome/go-testdeep/td"
 
-	"code.1533b4dc0.de/prskr/nurse/grammar"
-	"code.1533b4dc0.de/prskr/nurse/internal/values"
+	"code.icb4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/internal/values"
 )
 
 var wantParsedScript = td.Struct(new(grammar.Script), td.StructFields{

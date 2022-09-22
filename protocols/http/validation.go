@@ -3,7 +3,7 @@ package http
 import (
 	"net/http"
 
-	"code.1533b4dc0.de/prskr/nurse/validation"
+	"code.icb4dc0.de/prskr/nurse/validation"
 )
 
 var registry = validation.NewRegistry[*http.Response]()

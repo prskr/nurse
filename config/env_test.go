@@ -6,7 +6,7 @@ import (
 
 	"github.com/maxatome/go-testdeep/td"
 
-	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.icb4dc0.de/prskr/nurse/config"
 )
 
 //nolint:paralleltest // not possible with env setup

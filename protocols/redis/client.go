@@ -6,11 +6,10 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/mitchellh/mapstructure"
 
-	"code.1533b4dc0.de/prskr/nurse/config"
-	"code.1533b4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/config"
+	"code.icb4dc0.de/prskr/nurse/grammar"
 )
 
-//nolint:ireturn // no other choice
 func clientFromParam(p grammar.Param, srvLookup config.ServerLookup) (redis.UniversalClient, error) {
 	if srvName, err := p.AsString(); err != nil {
 		return nil, err
@@ -23,7 +22,6 @@ func clientFromParam(p grammar.Param, srvLookup config.ServerLookup) (redis.Univ
 	}
 }
 
-//nolint:ireturn // no other choice
 func ClientForServer(srv *config.Server) (redis.UniversalClient, error) {
 	opts := &redis.UniversalOptions{
 		Addrs: srv.Hosts,

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"code.1533b4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/grammar"
 )
 
 type Route string

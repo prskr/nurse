@@ -1,4 +1,4 @@
-module code.1533b4dc0.de/prskr/nurse
+module code.icb4dc0.de/prskr/nurse
 
 go 1.19
 

@@ -6,10 +6,10 @@ import (
 
 	"go.uber.org/multierr"
 
-	"code.1533b4dc0.de/prskr/nurse/check"
-	"code.1533b4dc0.de/prskr/nurse/config"
-	"code.1533b4dc0.de/prskr/nurse/grammar"
-	"code.1533b4dc0.de/prskr/nurse/validation"
+	"code.icb4dc0.de/prskr/nurse/check"
+	"code.icb4dc0.de/prskr/nurse/config"
+	"code.icb4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/validation"
 )
 
 var _ check.SystemChecker = (*SelectCheck)(nil)

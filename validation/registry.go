@@ -5,8 +5,8 @@ import (
 	"strings"
 	"sync"
 
-	"code.1533b4dc0.de/prskr/nurse/check"
-	"code.1533b4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/check"
+	"code.icb4dc0.de/prskr/nurse/grammar"
 )
 
 type (

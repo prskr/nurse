@@ -9,7 +9,7 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	"code.1533b4dc0.de/prskr/nurse/config"
+	"code.icb4dc0.de/prskr/nurse/config"
 )
 
 func PrepareRedisContainer(tb testing.TB) *config.Server {

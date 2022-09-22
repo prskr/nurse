@@ -12,9 +12,9 @@ import (
 
 	"github.com/maxatome/go-testdeep/td"
 
-	"code.1533b4dc0.de/prskr/nurse/check"
-	"code.1533b4dc0.de/prskr/nurse/grammar"
-	httpcheck "code.1533b4dc0.de/prskr/nurse/protocols/http"
+	"code.icb4dc0.de/prskr/nurse/check"
+	"code.icb4dc0.de/prskr/nurse/grammar"
+	httpcheck "code.icb4dc0.de/prskr/nurse/protocols/http"
 )
 
 func TestChecks_Execute(t *testing.T) {

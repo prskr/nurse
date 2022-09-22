@@ -10,10 +10,10 @@ import (
 
 	"github.com/maxatome/go-testdeep/td"
 
-	"code.1533b4dc0.de/prskr/nurse/check"
-	"code.1533b4dc0.de/prskr/nurse/config"
-	"code.1533b4dc0.de/prskr/nurse/grammar"
-	sqlchk "code.1533b4dc0.de/prskr/nurse/protocols/sql"
+	"code.icb4dc0.de/prskr/nurse/check"
+	"code.icb4dc0.de/prskr/nurse/config"
+	"code.icb4dc0.de/prskr/nurse/grammar"
+	sqlchk "code.icb4dc0.de/prskr/nurse/protocols/sql"
 )
 
 func TestChecks_Execute(t *testing.T) {

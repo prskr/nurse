@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"code.1533b4dc0.de/prskr/nurse/config"
-	"code.1533b4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/config"
+	"code.icb4dc0.de/prskr/nurse/grammar"
 )
 
 func dbFromParam(p grammar.Param, srvLookup config.ServerLookup) (*sql.DB, error) {

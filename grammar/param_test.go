@@ -3,8 +3,8 @@ package grammar_test
 import (
 	"testing"
 
-	"code.1533b4dc0.de/prskr/nurse/grammar"
-	"code.1533b4dc0.de/prskr/nurse/internal/values"
+	"code.icb4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/internal/values"
 )
 
 func TestParam_AsString(t *testing.T) {

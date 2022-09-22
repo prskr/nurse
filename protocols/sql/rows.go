@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"code.1533b4dc0.de/prskr/nurse/grammar"
-	"code.1533b4dc0.de/prskr/nurse/validation"
+	"code.icb4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/validation"
 )
 
 var _ validation.FromCall[*sql.Rows] = (*RowsValidator)(nil)

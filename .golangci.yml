@@ -5,7 +5,7 @@ linters-settings:
     lines: 100
     statements: 50
   gci:
-    local-prefixes: code.1533b4dc0.de/prskr/nurse
+    local-prefixes: code.icb4dc0.de/prskr/nurse
   goconst:
     min-len: 2
     min-occurrences: 2
@@ -61,7 +61,6 @@ linters:
   disable-all: true
   enable:
     - contextcheck
-    - deadcode
     - dogsled
     - dupl
     - errcheck
@@ -83,23 +82,21 @@ linters:
     - gosec
     # - gosimple
     - govet
-    - ifshort
     - importas
     - ineffassign
-    - ireturn
     - lll
     - misspell
     - nakedret
     - nestif
     - nilnil
     - noctx
+    - nolintlint
     - nosprintfhostport
     - paralleltest
     - prealloc
     - predeclared
     - promlinter
     # - staticcheck
-    - structcheck
     # - stylecheck
     - tenv
     - testpackage
@@ -107,9 +104,8 @@ linters:
     - typecheck
     - unconvert
     - unparam
-    - varcheck
     - whitespace
-    # - unused
+    - unused
     - wastedassign
 
 issues:
@@ -122,9 +118,6 @@ issues:
         - gocognit
         - gomnd
         - govet
-    - path: magefiles/
-      linters:
-        - deadcode
 
 run:
   skip-files:

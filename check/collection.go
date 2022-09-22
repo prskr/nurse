@@ -3,8 +3,8 @@ package check
 import (
 	"golang.org/x/sync/errgroup"
 
-	"code.1533b4dc0.de/prskr/nurse/config"
-	"code.1533b4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/config"
+	"code.icb4dc0.de/prskr/nurse/grammar"
 )
 
 var _ SystemChecker = Collection(nil)
