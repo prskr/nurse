@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 	"path"
-	. "strings"
+	"strings"
 )
 
 const (
@@ -14,16 +14,16 @@ const (
 func ServersFromEnv() (map[string]Server, error) {
 	servers := make(map[string]Server)
 	for _, kv := range os.Environ() {
-		key, value, valid := Cut(kv, "=")
+		key, value, valid := strings.Cut(kv, "=")
 		if !valid {
 			continue
 		}
 
-		if !HasPrefix(key, ServerKeyPrefix) {
+		if !strings.HasPrefix(key, ServerKeyPrefix) {
 			continue
 		}
 
-		serverName := ToLower(Trim(Replace(key, ServerKeyPrefix, "", -1), "_"))
+		serverName := strings.ToLower(strings.Trim(strings.Replace(key, ServerKeyPrefix, "", -1), "_"))
 		srv := Server{}
 		if err := srv.UnmarshalURL(value); err != nil {
 			return nil, err
@@ -39,16 +39,16 @@ func EndpointsFromEnv() (map[Route]EndpointSpec, error) {
 	endpoints := make(map[Route]EndpointSpec)
 
 	for _, kv := range os.Environ() {
-		key, value, valid := Cut(kv, "=")
+		key, value, valid := strings.Cut(kv, "=")
 		if !valid {
 			continue
 		}
 
-		if !HasPrefix(key, EndpointKeyPrefix) {
+		if !strings.HasPrefix(key, EndpointKeyPrefix) {
 			continue
 		}
 
-		endpointRoute := path.Join(Split(ToLower(Trim(Replace(key, EndpointKeyPrefix, "", -1), "_")), "_")...)
+		endpointRoute := path.Join(strings.Split(strings.ToLower(strings.Trim(strings.Replace(key, EndpointKeyPrefix, "", -1), "_")), "_")...)
 		spec := EndpointSpec{}
 		if err := spec.Parse(value); err != nil {
 			return nil, err

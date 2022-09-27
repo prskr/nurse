@@ -6,7 +6,7 @@ import (
 	"code.icb4dc0.de/prskr/nurse/validation"
 )
 
-type jsonPathValidator_EqualsTestCase[V validation.Value] struct {
+type jsonPathValidatorEqualsTestCase[V validation.Value] struct {
 	testName string
 	expected V
 	jsonPath string
@@ -14,12 +14,12 @@ type jsonPathValidator_EqualsTestCase[V validation.Value] struct {
 	wantErr  bool
 }
 
-func (tt jsonPathValidator_EqualsTestCase[V]) name() string {
+func (tt jsonPathValidatorEqualsTestCase[V]) name() string {
 	return tt.testName
 }
 
 //nolint:thelper // is not a helper
-func (tt jsonPathValidator_EqualsTestCase[V]) run(t *testing.T) {
+func (tt jsonPathValidatorEqualsTestCase[V]) run(t *testing.T) {
 	t.Parallel()
 	t.Helper()
 	validator, err := validation.JSONPathValidatorFor(tt.jsonPath, tt.expected)
@@ -37,42 +37,42 @@ func (tt jsonPathValidator_EqualsTestCase[V]) run(t *testing.T) {
 func TestJSONPathValidator_Equals(t *testing.T) {
 	t.Parallel()
 	tests := []testCase{
-		jsonPathValidator_EqualsTestCase[string]{
+		jsonPathValidatorEqualsTestCase[string]{
 			testName: "Simple object navigation",
 			expected: "hello",
 			jsonPath: "$.greeting",
 			json:     `{"greeting": "hello"}`,
 			wantErr:  false,
 		},
-		jsonPathValidator_EqualsTestCase[string]{
+		jsonPathValidatorEqualsTestCase[string]{
 			testName: "Simple object navigation - number as string",
 			expected: "42",
 			jsonPath: "$.number",
 			json:     `{"number": 42}`,
 			wantErr:  false,
 		},
-		jsonPathValidator_EqualsTestCase[string]{
+		jsonPathValidatorEqualsTestCase[string]{
 			testName: "Simple array navigation",
 			expected: "world",
 			jsonPath: "$[1]",
 			json:     `["hello", "world"]`,
 			wantErr:  false,
 		},
-		jsonPathValidator_EqualsTestCase[int]{
+		jsonPathValidatorEqualsTestCase[int]{
 			testName: "Simple array navigation - string to int",
 			expected: 37,
 			jsonPath: "$[1]",
 			json:     `["13", "37"]`,
 			wantErr:  false,
 		},
-		jsonPathValidator_EqualsTestCase[int]{
+		jsonPathValidatorEqualsTestCase[int]{
 			testName: "Simple array navigation - string to int - wrong value",
 			expected: 42,
 			jsonPath: "$[1]",
 			json:     `["13", "37"]`,
 			wantErr:  true,
 		},
-		jsonPathValidator_EqualsTestCase[string]{
+		jsonPathValidatorEqualsTestCase[string]{
 			testName: "Simple array navigation - int to string",
 			expected: "37",
 			jsonPath: "$[1]",

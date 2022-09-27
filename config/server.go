@@ -199,8 +199,8 @@ func (s *Server) UnmarshalJSON(bytes []byte) error {
 	return s.mergedMarshaledServer(*tmp)
 }
 
-func (s *Server) UnmarshalURL(rawUrl string) error {
-	rawPath, username, password, err := s.extractBaseProperties(rawUrl)
+func (s *Server) UnmarshalURL(rawURL string) error {
+	rawPath, username, password, err := s.extractBaseProperties(rawURL)
 	if err != nil {
 		return err
 	}
@@ -215,11 +215,11 @@ func (s *Server) UnmarshalURL(rawUrl string) error {
 	}
 
 	if rawPath != "" {
-		parsedUrl, err := url.Parse(fmt.Sprintf("%s://%s%s", s.Type.Scheme(), s.Hosts[0], rawPath))
+		parsedURL, err := url.Parse(fmt.Sprintf("%s://%s%s", s.Type.Scheme(), s.Hosts[0], rawPath))
 		if err != nil {
 			return err
 		}
-		if err := s.unmarshalPath(parsedUrl); err != nil {
+		if err := s.unmarshalPath(parsedURL); err != nil {
 			return err
 		}
 	} else {
@@ -229,8 +229,8 @@ func (s *Server) UnmarshalURL(rawUrl string) error {
 	return nil
 }
 
-func (s *Server) extractBaseProperties(rawUrl string) (rawPath, username, password string, err error) {
-	allMatches := hostsRegexp.FindAllStringSubmatch(rawUrl, -1)
+func (s *Server) extractBaseProperties(rawURL string) (rawPath, username, password string, err error) {
+	allMatches := hostsRegexp.FindAllStringSubmatch(rawURL, -1)
 	if matchLen := len(allMatches); matchLen != 1 {
 		return "", "", "", fmt.Errorf("ambiguous server match: %d", matchLen)
 	}

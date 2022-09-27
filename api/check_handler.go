@@ -26,5 +26,4 @@ func (c CheckHandler) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	return
 }

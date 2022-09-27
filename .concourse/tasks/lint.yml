@@ -1,0 +1,27 @@
+---
+platform: linux
+
+image_resource:
+    type: registry-image
+    source:
+        repository: docker.io/golang:1.19-bullseye
+        tag: latest
+
+inputs:
+    - name: repo
+      path: .
+
+params:
+    GO111MODULE: "on"
+    CGO_ENABLED: "0"
+    GITEA_TOKEN: ((gitea-credentials.token))
+    DOCKER_HOST: tcp://127.0.0.1:2375
+
+run:
+    path: sh
+    args:
+        - -ce
+        - |
+            apk add -U --no-cache curl
+            curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/bin
+            go run github.com/magefile/mage lint

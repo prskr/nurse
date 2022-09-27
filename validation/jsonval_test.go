@@ -11,7 +11,7 @@ type testCase interface {
 	name() string
 }
 
-type jsonValueComparator_EqualsTestCase[V validation.Value] struct {
+type jsonValueComparatorEqualsTestCase[V validation.Value] struct {
 	testName string
 	expected V
 	got      any
@@ -19,7 +19,7 @@ type jsonValueComparator_EqualsTestCase[V validation.Value] struct {
 }
 
 //nolint:thelper // is not a helper
-func (tt jsonValueComparator_EqualsTestCase[V]) run(t *testing.T) {
+func (tt jsonValueComparatorEqualsTestCase[V]) run(t *testing.T) {
 	t.Parallel()
 	t.Helper()
 	comparator, err := validation.JSONValueComparatorFor(tt.expected)
@@ -34,140 +34,140 @@ func (tt jsonValueComparator_EqualsTestCase[V]) run(t *testing.T) {
 	}
 }
 
-func (tt jsonValueComparator_EqualsTestCase[V]) name() string {
+func (tt jsonValueComparatorEqualsTestCase[V]) name() string {
 	return tt.testName
 }
 
 func TestJSONValueComparator_Equals(t *testing.T) {
 	t.Parallel()
 	tests := []testCase{
-		jsonValueComparator_EqualsTestCase[int]{
+		jsonValueComparatorEqualsTestCase[int]{
 			testName: "Test int equality",
 			expected: 42,
 			got:      42,
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[int]{
+		jsonValueComparatorEqualsTestCase[int]{
 			testName: "Test int equality - wrong value",
 			expected: 42,
 			got:      43,
 			wantErr:  true,
 		},
-		jsonValueComparator_EqualsTestCase[int]{
+		jsonValueComparatorEqualsTestCase[int]{
 			testName: "Test int equality - string value",
 			expected: 42,
 			got:      "42",
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[int]{
+		jsonValueComparatorEqualsTestCase[int]{
 			testName: "Test int equality - []byte value",
 			expected: 42,
 			got:      []byte("42"),
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[int]{
+		jsonValueComparatorEqualsTestCase[int]{
 			testName: "Test int equality - float value",
 			expected: 42,
 			got:      42.0,
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[int8]{
+		jsonValueComparatorEqualsTestCase[int8]{
 			testName: "Test int8 equality",
 			expected: 42,
 			got:      42,
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[int8]{
+		jsonValueComparatorEqualsTestCase[int8]{
 			testName: "Test int8 equality - wrong value",
 			expected: 42,
 			got:      43,
 			wantErr:  true,
 		},
-		jsonValueComparator_EqualsTestCase[int8]{
+		jsonValueComparatorEqualsTestCase[int8]{
 			testName: "Test int8 equality - int16 value",
 			expected: 42,
 			got:      int16(42),
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[int8]{
+		jsonValueComparatorEqualsTestCase[int8]{
 			testName: "Test int8 equality - uint16 value",
 			expected: 42,
 			got:      uint16(42),
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[float32]{
+		jsonValueComparatorEqualsTestCase[float32]{
 			testName: "Test float32 equality - float value",
 			expected: 42.0,
 			got:      42.0,
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[float32]{
+		jsonValueComparatorEqualsTestCase[float32]{
 			testName: "Test float32 equality - float value",
 			expected: 42.0,
 			got:      float64(42.0),
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[float64]{
+		jsonValueComparatorEqualsTestCase[float64]{
 			testName: "Test float64 equality - float value",
 			expected: 42.0,
 			got:      42.0,
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[float64]{
+		jsonValueComparatorEqualsTestCase[float64]{
 			testName: "Test float64 equality - int value",
 			expected: 42.0,
 			got:      42,
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[float64]{
+		jsonValueComparatorEqualsTestCase[float64]{
 			testName: "Test float64 equality - []byte value",
 			expected: 42.0,
 			got:      []byte("42"),
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[float64]{
+		jsonValueComparatorEqualsTestCase[float64]{
 			testName: "Test float64 equality - float32 value",
 			expected: 42.0,
 			got:      float32(42.0),
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[float64]{
+		jsonValueComparatorEqualsTestCase[float64]{
 			testName: "Test float64 equality - string value",
 			expected: 42.0,
 			got:      "42.0",
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[float64]{
+		jsonValueComparatorEqualsTestCase[float64]{
 			testName: "Test float64 equality - string value without dot",
 			expected: 42.0,
 			got:      "42",
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[string]{
+		jsonValueComparatorEqualsTestCase[string]{
 			testName: "Test string equality",
 			expected: "hello",
 			got:      "hello",
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[string]{
+		jsonValueComparatorEqualsTestCase[string]{
 			testName: "Test string equality - []byte value",
 			expected: "hello",
 			got:      []byte("hello"),
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[string]{
+		jsonValueComparatorEqualsTestCase[string]{
 			testName: "Test string equality - int value",
 			expected: "1337",
 			got:      1337,
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[string]{
+		jsonValueComparatorEqualsTestCase[string]{
 			testName: "Test string equality - float value",
 			expected: "13.37",
 			got:      13.37,
 			wantErr:  false,
 		},
-		jsonValueComparator_EqualsTestCase[string]{
+		jsonValueComparatorEqualsTestCase[string]{
 			testName: "Test string equality - wrong case",
 			expected: "hello",
 			got:      "HELLO",

@@ -16,5 +16,6 @@
 
 dist/
 .idea/
+.fleet/
 cue.mod/
 .go/

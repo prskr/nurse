@@ -3,19 +3,21 @@ module code.icb4dc0.de/prskr/nurse
 go 1.19
 
 require (
+	code.gitea.io/sdk/gitea v0.15.1
 	github.com/PaesslerAG/jsonpath v0.1.1
 	github.com/alecthomas/participle/v2 v2.0.0-beta.5
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgx/v5 v5.0.0
+	github.com/magefile/mage v1.14.0
 	github.com/maxatome/go-testdeep v1.12.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/testcontainers/testcontainers-go v0.14.0
 	github.com/valyala/bytebufferpool v1.0.0
 	go.uber.org/multierr v1.8.0
 	go.uber.org/zap v1.23.0
-	golang.org/x/exp v0.0.0-20220927162542-c76eaa363f9d
+	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30
 	golang.org/x/sync v0.0.0-20220923202941-7f9b1623fab7
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -38,6 +40,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/hashicorp/go-version v1.2.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
@@ -55,7 +58,7 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
 	golang.org/x/net v0.0.0-20220617184016-355a448f1bc9 // indirect
-	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220617124728-180714bec0ad // indirect
 	google.golang.org/grpc v1.47.0 // indirect
