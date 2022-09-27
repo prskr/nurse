@@ -1,5 +1,26 @@
 version: v0
 runs:
+  - name: Renovate deps
+    when:
+      branch: main
+    tasks:
+      - name: Run renovate
+        runtime:
+          containers:
+            - image: docker.io/renovate/renovate
+        environment:
+          RENOVATE_PLATFORM: gitea
+          RENOVATE_AUTODISCOVER: 'false'
+          RENOVATE_ENDPOINT: https://code.icb4dc0.de/api/v1
+          LOG_LEVEL: info
+          RENOVATE_TOKEN:
+            from_variable: gitea-token
+          GITHUB_COM_TOKEN:
+            from_variable: github-token
+        steps:
+          - run:
+              name: Run bot
+              command: renovate prskr/nurse
   - name: Test and lint
     tasks:
       - name: Checkout code
