@@ -1,17 +1,17 @@
 ---
 resources:
-    - name: nurse.git
-      type: git
-      icon: github
-      source:
-          uri: https://code.icb4dc0.de/prskr/nurse.git
-          branch: ((branch))
+  - name: nurse.git
+    type: git
+    icon: github
+    source:
+      uri: https://code.icb4dc0.de/prskr/nurse.git
+      branch: ((branch))
 
 jobs:
-    - name: lint
-      plan:
-          - get: nurse.git
-            trigger: true
-    - task: lint
-      file: nurse.git/.concourse/tasks/lint.yml
-      input_mapping: {repo: nurse.git}
+  - name: lint
+    plan:
+      - get: nurse.git
+        trigger: true
+      - task: lint
+        file: nurse.git/.concourse/tasks/lint.yml
+        input_mapping: {repo: nurse.git}
