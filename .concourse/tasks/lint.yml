@@ -21,4 +21,4 @@ run:
   args:
     - -ce
     - |
-      go run github.com/magefile/mage lint
+      golangci-lint run -v
