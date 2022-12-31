@@ -15,3 +15,7 @@ jobs:
       - task: lint
         file: nurse.git/.concourse/tasks/lint.yml
         input_mapping: {repo: nurse.git}
+      - task: test
+        file: nurse.git/.concourse/tasks/test.yml
+        privileged: true
+        input_mapping: {repo: nurse.git}
