@@ -1,31 +1,30 @@
 ---
 resources:
-    - name: daily
-      type: time
-      source:
-        interval: 24h
-    - name: nurse.git
-      type: git
-      icon: github
-      source:
-          uri: https://code.icb4dc0.de/prskr/nurse.git
-    - name: templates.git
-      type: git
-      icon: github
-      source:
-          uri: https://code.icb4dc0.de/prskr/pipeline-templates.git
+  - name: daily
+    type: time
+    source:
+      interval: 24h
+  - name: nurse.git
+    type: git
+    icon: github
+    source:
+      uri: https://code.icb4dc0.de/prskr/nurse.git
+  - name: templates.git
+    type: git
+    icon: github
+    source:
+      uri: https://code.icb4dc0.de/prskr/pipeline-templates.git
 
 jobs:
-    - name: renovate
-      plan:
-        - get: nurse.git
-          trigger: true
-        - get: templates.git
-          trigger: true
-        - get: daily
-          trigger: true
-    - task: renovate
-      file: templates.git/tasks/renovate.yml
-      input_mapping: {repo: nurse.git}
-      vars:
+  - name: renovate
+    plan:
+      - get: nurse.git
+        trigger: true
+      - get: templates.git
+      - get: daily
+        trigger: true
+      - task: renovate
+        file: templates.git/tasks/renovate.yml
+        input_mapping: { repo: nurse.git }
+        vars:
           project_path: prskr/nurse
