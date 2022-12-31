@@ -40,6 +40,11 @@ jobs:
             context: concourse-ci/lint/golangci-lint
             description: Lint Go files
             state: failure
+  - name: test
+    plan:
+      - get: nurse.git
+        trigger: true
+      - get: templates.git
       - task: test
         file: nurse.git/.concourse/tasks/test.yml
         privileged: true
