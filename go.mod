@@ -3,7 +3,6 @@ module code.icb4dc0.de/prskr/nurse
 go 1.19
 
 require (
-	code.gitea.io/sdk/gitea v0.15.1
 	github.com/PaesslerAG/jsonpath v0.1.1
 	github.com/alecthomas/participle/v2 v2.0.0-beta.5
 	github.com/go-redis/redis/v8 v8.11.5
@@ -40,7 +39,6 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/hashicorp/go-version v1.2.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
