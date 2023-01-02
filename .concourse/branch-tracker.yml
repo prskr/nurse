@@ -33,10 +33,10 @@ jobs:
         - get: nurse.git
       - load_var: branches
         file: feature-branches/branches.json
-  - across:
-    - var: branch
-      values: ((.:branches))
-    set_pipeline: dev
-    file: nurse.git/.concourse/branch-validate.yml
-    instance_vars: {feature: ((.:branch.groups.feature))}
-    vars: {branch: ((.:branch.name))}
+      - across:
+        - var: branch
+          values: ((.:branches))
+        set_pipeline: dev
+        file: nurse.git/.concourse/branch-validate.yml
+        instance_vars: {feature: ((.:branch.groups.feature))}
+        vars: {branch: ((.:branch.name))}
