@@ -36,7 +36,7 @@ jobs:
       - across:
         - var: branch
           values: ((.:branches))
-        set_pipeline: dev
+        set_pipeline: nurse.dev
         file: nurse.git/.concourse/branch-validate.yml
         instance_vars: {feature: ((.:branch.groups.feature))}
         vars: {branch: ((.:branch.name))}
