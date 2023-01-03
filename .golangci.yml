@@ -41,7 +41,8 @@ linters-settings:
           - condition
           - return
   gomoddirectives:
-    replace-allow-list: []
+    replace-allow-list:
+      - github.com/docker/docker
   govet:
     check-shadowing: true
     enable-all: true

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/testcontainers/testcontainers-go"
+	tc "github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 
 	"code.icb4dc0.de/prskr/nurse/config"
@@ -19,8 +19,8 @@ func PrepareRedisContainer(tb testing.TB) *config.Server {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	tb.Cleanup(cancel)
 
-	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: testcontainers.ContainerRequest{
+	container, err := tc.GenericContainer(ctx, tc.GenericContainerRequest{
+		ContainerRequest: tc.ContainerRequest{
 			Image:        "docker.io/redis:alpine",
 			ExposedPorts: []string{redisPort},
 			SkipReaper:   true,
@@ -28,10 +28,10 @@ func PrepareRedisContainer(tb testing.TB) *config.Server {
 			WaitingFor:   wait.ForListeningPort(redisPort),
 		},
 		Started: true,
-		Logger:  testcontainers.TestLogger(tb),
+		Logger:  tc.TestLogger(tb),
 	})
 	if err != nil {
-		tb.Fatalf("testcontainers.GenericContainer() err = %v", err)
+		tb.Fatalf("tc.GenericContainer() err = %v", err)
 	}
 
 	tb.Cleanup(func() {

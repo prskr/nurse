@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/maxatome/go-testdeep/td"
-	"github.com/testcontainers/testcontainers-go"
+	tc "github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 
 	"code.icb4dc0.de/prskr/nurse/config"
@@ -27,8 +27,8 @@ func PreparePostgresContainer(tb testing.TB) (name string, cfg *config.Server) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	tb.Cleanup(cancel)
 
-	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: testcontainers.ContainerRequest{
+	container, err := tc.GenericContainer(ctx, tc.GenericContainerRequest{
+		ContainerRequest: tc.ContainerRequest{
 			Image:        "docker.io/postgres:alpine",
 			ExposedPorts: []string{postgresPort},
 			SkipReaper:   true,
@@ -41,10 +41,10 @@ func PreparePostgresContainer(tb testing.TB) (name string, cfg *config.Server) {
 			WaitingFor: wait.ForListeningPort(postgresPort),
 		},
 		Started: true,
-		Logger:  testcontainers.TestLogger(tb),
+		Logger:  tc.TestLogger(tb),
 	})
 
-	td.CmpNoError(tb, err, "testcontainers.GenericContainer()")
+	td.CmpNoError(tb, err, "tc.GenericContainer()")
 
 	tb.Cleanup(func() {
 		td.CmpNoError(tb, container.Terminate(context.Background()), "container.Terminate()")
@@ -76,8 +76,8 @@ func PrepareMariaDBContainer(tb testing.TB) (name string, cfg *config.Server) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	tb.Cleanup(cancel)
 
-	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: testcontainers.ContainerRequest{
+	container, err := tc.GenericContainer(ctx, tc.GenericContainerRequest{
+		ContainerRequest: tc.ContainerRequest{
 			Image:        "docker.io/mariadb:10",
 			ExposedPorts: []string{mysqlPort},
 			SkipReaper:   true,
@@ -91,10 +91,10 @@ func PrepareMariaDBContainer(tb testing.TB) (name string, cfg *config.Server) {
 			WaitingFor: wait.ForListeningPort(mysqlPort),
 		},
 		Started: true,
-		Logger:  testcontainers.TestLogger(tb),
+		Logger:  tc.TestLogger(tb),
 	})
 
-	td.CmpNoError(tb, err, "testcontainers.GenericContainer()")
+	td.CmpNoError(tb, err, "tc.GenericContainer()")
 
 	tb.Cleanup(func() {
 		td.CmpNoError(tb, container.Terminate(context.Background()), "container.Terminate()")
