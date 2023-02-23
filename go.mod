@@ -1,6 +1,6 @@
 module code.icb4dc0.de/prskr/nurse
 
-go 1.19
+go 1.20
 
 require (
 	github.com/PaesslerAG/jsonpath v0.1.1
