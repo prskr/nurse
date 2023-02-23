@@ -69,6 +69,5 @@ func (s *SelectCheck) executeAttempt(ctx context.Context) (err error) {
 		err = errors.Join(rows.Close(), rows.Err())
 	}()
 
-
 	return s.validators.Validate(rows)
 }
