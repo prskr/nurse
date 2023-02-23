@@ -3,8 +3,7 @@ package sql
 import (
 	"context"
 	"database/sql"
-
-	"go.uber.org/multierr"
+	"errors"
 
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"
@@ -66,8 +65,10 @@ func (s *SelectCheck) executeAttempt(ctx context.Context) (err error) {
 		return err
 	}
 
-	defer multierr.AppendInvoke(&err, multierr.Close(rows))
-	defer multierr.AppendInvoke(&err, multierr.Invoke(rows.Err))
+	defer func() {
+		err = errors.Join(rows.Close(), rows.Err())
+	}()
+
 
 	return s.validators.Validate(rows)
 }
