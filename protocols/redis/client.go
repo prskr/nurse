@@ -3,8 +3,8 @@ package redis
 import (
 	"strconv"
 
-	"github.com/go-redis/redis/v8"
 	"github.com/mitchellh/mapstructure"
+	"github.com/redis/go-redis/v9"
 
 	"code.icb4dc0.de/prskr/nurse/config"
 	"code.icb4dc0.de/prskr/nurse/grammar"

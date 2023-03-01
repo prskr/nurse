@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	redisCli "github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
 	"github.com/maxatome/go-testdeep/td"
+	redisCli "github.com/redis/go-redis/v9"
 
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"

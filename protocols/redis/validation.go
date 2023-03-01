@@ -3,7 +3,7 @@ package redis
 import (
 	"errors"
 
-	"github.com/go-redis/redis/v8"
+	"github.com/redis/go-redis/v9"
 
 	"code.icb4dc0.de/prskr/nurse/grammar"
 	"code.icb4dc0.de/prskr/nurse/validation"
