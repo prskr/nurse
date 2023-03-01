@@ -43,7 +43,7 @@ trigger:
 
 steps:
   - name: Renovate
-    image: docker.io/renovate/renovate
+    image: code.icb4dc0.de/prskr/ci-images/renovate:latest
     commands:
       - renovate "${DRONE_REPO}"
     environment:
