@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/PaesslerAG/jsonpath v0.1.1
 	github.com/alecthomas/participle/v2 v2.0.0-beta.5
-	github.com/go-redis/redis/v8 v8.11.5
+	github.com/go-redis/redis/v9 v9.0.2
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgx/v5 v5.3.1
