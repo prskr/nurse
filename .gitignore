@@ -19,3 +19,4 @@ dist/
 .fleet/
 cue.mod/
 .go/
+out/
