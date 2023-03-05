@@ -16,6 +16,9 @@ steps:
       GO111MODULE: "on"
       CGO_ENABLED: "0"
       GOMEMLIMIT: "1150MiB"
+    volumes:
+      - name: go-cache
+        path: /go
     commands:
       - golangci-lint run -v
 
@@ -26,6 +29,9 @@ steps:
       GO111MODULE: "on"
       CGO_ENABLED: "1"
       DOCKER_HOST: tcp://localhost:2375
+    volumes:
+      - name: go-cache
+        path: /go
     commands:
       - go install gotest.tools/gotestsum@latest
       - gotestsum --junitfile out/results.xml --format pkgname-and-test-fails -- -race -shuffle=on ./...
@@ -34,6 +40,10 @@ steps:
     image: ghcr.io/rohit-gohri/drone-junit:v0
     settings:
       paths: out/results.xml
+
+volumes:
+  - name: go-cache
+    temp: { }
 
 ---
 kind: pipeline
