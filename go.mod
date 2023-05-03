@@ -11,7 +11,7 @@ require (
 	github.com/magefile/mage v1.14.0
 	github.com/maxatome/go-testdeep v1.12.0
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/redis/go-redis/v9 v9.0.3
+	github.com/redis/go-redis/v9 v9.0.4
 	github.com/testcontainers/testcontainers-go v0.18.0
 	github.com/valyala/bytebufferpool v1.0.0
 	go.uber.org/zap v1.24.0
