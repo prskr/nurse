@@ -16,7 +16,7 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0
 	go.uber.org/zap v1.24.0
 	golang.org/x/exp v0.0.0-20230303215020-44a13b063f3e
-	golang.org/x/sync v0.1.0
+	golang.org/x/sync v0.2.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
