@@ -9,7 +9,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/magefile/mage v1.15.0
-	github.com/maxatome/go-testdeep v1.12.0
+	github.com/maxatome/go-testdeep v1.13.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/redis/go-redis/v9 v9.0.4
 	github.com/testcontainers/testcontainers-go v0.18.0
