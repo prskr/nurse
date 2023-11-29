@@ -12,13 +12,9 @@ builds:
       - linux
       - windows
       - darwin
-archives:
-  - replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
+    goarch:
+      - amd64
+      - arm64
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -34,8 +30,8 @@ dockers:
   - ids:
       - nurse
     image_templates:
-      - ghcr.io/baez90/nurse:latest
-      - ghcr.io/baez90/nurse:{{ .Tag }}
-      - ghcr.io/baez90/nurse:{{ .Major }}
-      - ghcr.io/baez90/nurse:{{ .ShortCommit}}
+      - code.icb4dc0.de/prskr/nurse:latest
+      - code.icb4dc0.de/prskr/nurse:{{ .Tag }}
+      - code.icb4dc0.de/prskr/nurse:{{ .Major }}
+      - code.icb4dc0.de/prskr/nurse:{{ .ShortCommit}}
     dockerfile: deployments/Dockerfile
