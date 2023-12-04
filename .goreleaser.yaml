@@ -34,6 +34,12 @@ release:
   extra_files:
     - glob: ./nurse.yaml
 
+archives:
+  - id: nurse
+    builds:
+      - nurse
+    format: tar.gz
+
 dockers:
   - ids:
       - nurse
