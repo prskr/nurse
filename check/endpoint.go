@@ -23,5 +23,5 @@ func CheckForScript(script []grammar.Check, lkp ModuleLookup, srvLookup config.S
 		compiledChecks = append(compiledChecks, compiledCheck)
 	}
 
-	return Collection(compiledChecks), nil
+	return compiledChecks, nil
 }

@@ -2,6 +2,7 @@ package redis
 
 import (
 	"errors"
+	"log/slog"
 
 	"github.com/redis/go-redis/v9"
 
@@ -68,6 +69,8 @@ func (g *GenericCmdValidator) UnmarshalCall(c grammar.Call) error {
 }
 
 func (g *GenericCmdValidator) Validate(cmder redis.Cmder) error {
+	slog.Default().Debug("Validate Redis result")
+
 	if err := cmder.Err(); err != nil {
 		return err
 	}

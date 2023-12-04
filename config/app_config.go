@@ -8,28 +8,28 @@ import (
 
 type (
 	Option interface {
-		Extend(n Nurse) (Nurse, error)
+		Extend(n *Nurse) error
 	}
-	OptionFunc func(n Nurse) (Nurse, error)
+	OptionFunc func(n *Nurse) error
 )
 
-func (f OptionFunc) Extend(n Nurse) (Nurse, error) {
+func (f OptionFunc) Extend(n *Nurse) error {
 	return f(n)
 }
 
 func New(opts ...Option) (*Nurse, error) {
 	var (
-		inst Nurse
+		inst = new(Nurse)
 		err  error
 	)
 
 	for i := range opts {
-		if inst, err = opts[i].Extend(inst); err != nil {
+		if err = opts[i].Extend(inst); err != nil {
 			return nil, err
 		}
 	}
 
-	return &inst, nil
+	return inst, nil
 }
 
 type Nurse struct {
@@ -37,9 +37,10 @@ type Nurse struct {
 	Endpoints     map[Route]EndpointSpec
 	CheckTimeout  time.Duration
 	CheckAttempts uint
+	Insecure      bool
 }
 
-func (n Nurse) ServerLookup() (*ServerRegister, error) {
+func (n *Nurse) ServerLookup() (*ServerRegister, error) {
 	register := NewServerRegister()
 
 	for name, srv := range n.Servers {
@@ -53,7 +54,7 @@ func (n Nurse) ServerLookup() (*ServerRegister, error) {
 
 // Merge merges the current Nurse instance with another one
 // giving the current instance precedence means no set value is overwritten
-func (n Nurse) Merge(other Nurse) Nurse {
+func (n *Nurse) Merge(other Nurse) {
 	if n.CheckTimeout == 0 {
 		n.CheckTimeout = other.CheckTimeout
 	}
@@ -67,8 +68,6 @@ func (n Nurse) Merge(other Nurse) Nurse {
 			n.Servers[name] = srv
 		}
 	}
-
-	return n
 }
 
 func (n *Nurse) Unmarshal(reader io.ReadSeeker) error {

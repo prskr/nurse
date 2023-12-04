@@ -1,9 +1,8 @@
 package api
 
 import (
+	"log/slog"
 	"net/http"
-
-	"go.uber.org/zap"
 
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"
@@ -12,10 +11,8 @@ import (
 func PrepareMux(instance *config.Nurse, modLookup check.ModuleLookup, srvLookup config.ServerLookup) (http.Handler, error) {
 	mux := http.NewServeMux()
 
-	logger := zap.L()
-
 	for route, spec := range instance.Endpoints {
-		logger.Info("Configuring route", zap.String("route", route.String()))
+		slog.Info("Configuring route", slog.String("route", route.String()))
 		chk, err := check.CheckForScript(spec.Checks, modLookup, srvLookup)
 		if err != nil {
 			return nil, err

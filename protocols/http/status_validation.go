@@ -2,6 +2,7 @@ package http
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 
 	"code.icb4dc0.de/prskr/nurse/grammar"
@@ -15,6 +16,11 @@ type StatusValidator struct {
 }
 
 func (s *StatusValidator) Validate(resp *http.Response) error {
+	slog.Debug("Validate HTTP status code",
+		slog.Int("expected_code", s.Want),
+		slog.Int("actual_code", resp.StatusCode),
+	)
+
 	if resp.StatusCode != s.Want {
 		return fmt.Errorf("want HTTP status %d but got %d", s.Want, resp.StatusCode)
 	}

@@ -3,6 +3,7 @@ package sql
 import (
 	"database/sql"
 	"fmt"
+	"log/slog"
 
 	"code.icb4dc0.de/prskr/nurse/grammar"
 	"code.icb4dc0.de/prskr/nurse/validation"
@@ -15,6 +16,10 @@ type RowsValidator struct {
 }
 
 func (r *RowsValidator) Validate(in *sql.Rows) error {
+	slog.Debug("Validate rows count",
+		slog.Int("expected_row_count", r.Want),
+	)
+
 	readRows := 0
 	for in.Next() {
 		readRows++

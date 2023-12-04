@@ -3,6 +3,7 @@ package http
 import (
 	"bytes"
 	"io"
+	"log/slog"
 	"net/http"
 
 	"code.icb4dc0.de/prskr/nurse/check"
@@ -37,6 +38,12 @@ func (g *GenericCheck) SetClient(client *http.Client) {
 }
 
 func (g *GenericCheck) Execute(ctx check.Context) error {
+	slog.Default().Debug("Execute check",
+		slog.String("check", "http"),
+		slog.String("method", g.Method),
+		slog.String("url", g.URL),
+	)
+
 	var body io.Reader
 	if len(g.Body) > 0 {
 		body = bytes.NewReader(g.Body)

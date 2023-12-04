@@ -1,23 +1,68 @@
 package config
 
 import (
+	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
-
-	"go.uber.org/zap"
+	"strings"
+	"time"
 )
 
 //nolint:ireturn // required for interface implementation
+func WithCheckDuration(d time.Duration) Option {
+	return OptionFunc(func(n *Nurse) error {
+		n.CheckTimeout = d
+
+		return nil
+	})
+}
+
+func WithCheckAttempts(attempts uint) Option {
+	return OptionFunc(func(n *Nurse) error {
+		n.CheckAttempts = attempts
+		return nil
+	})
+}
+
+//nolint:ireturn // required for interface implementation
+func WithServersFromArgs(servers []string) Option {
+	return OptionFunc(func(n *Nurse) error {
+		if len(servers) == 0 {
+			return nil
+		}
+
+		for _, rawSrv := range servers {
+			name, rawURL, found := strings.Cut(rawSrv, "=")
+			if !found {
+				return fmt.Errorf("couldn't parse %s as server, expected format: <server-name>=<url>", rawSrv)
+			}
+
+			var srv Server
+			if err := srv.UnmarshalURL(rawURL); err != nil {
+				return err
+			}
+
+			name = strings.ToLower(strings.TrimSpace(name))
+
+			n.Servers[name] = srv
+		}
+
+		return nil
+	})
+}
+
+//nolint:ireturn // required for interface implementation
 func WithServersFromEnv() Option {
-	return OptionFunc(func(n Nurse) (Nurse, error) {
+	return OptionFunc(func(n *Nurse) error {
 		envServers, err := ServersFromEnv()
 		if err != nil {
-			return Nurse{}, err
+			return err
 		}
 
 		if n.Servers == nil || len(n.Servers) == 0 {
 			n.Servers = envServers
-			return n, nil
+			return nil
 		}
 
 		for name, srv := range envServers {
@@ -26,20 +71,20 @@ func WithServersFromEnv() Option {
 			}
 		}
 
-		return n, nil
+		return nil
 	})
 }
 
 func WithEndpointsFromEnv() Option {
-	return OptionFunc(func(n Nurse) (Nurse, error) {
+	return OptionFunc(func(n *Nurse) error {
 		envEndpoints, err := EndpointsFromEnv()
 		if err != nil {
-			return Nurse{}, err
+			return err
 		}
 
 		if n.Endpoints == nil || len(n.Endpoints) == 0 {
 			n.Endpoints = envEndpoints
-			return n, nil
+			return nil
 		}
 
 		for route, spec := range envEndpoints {
@@ -48,74 +93,67 @@ func WithEndpointsFromEnv() Option {
 			}
 		}
 
-		return n, nil
-	})
-}
-
-func WithValuesFrom(other Nurse) Option {
-	return OptionFunc(func(n Nurse) (Nurse, error) {
-		return n.Merge(other), nil
+		return nil
 	})
 }
 
 //nolint:ireturn // required to implement interface
 func WithConfigFile(configFilePath string) Option {
-	logger := zap.L()
-	return OptionFunc(func(n Nurse) (Nurse, error) {
+	return OptionFunc(func(n *Nurse) error {
 		var out Nurse
 		if configFilePath != "" {
-			logger.Debug("Attempt to load config file")
+			slog.Debug("Attempt to load config file")
 			if err := out.ReadFromFile(configFilePath); err == nil {
-				return out, nil
+				return nil
 			} else {
-				logger.Warn(
+				slog.Warn(
 					"Failed to load config file",
-					zap.String("config_file_path", configFilePath),
-					zap.Error(err),
+					slog.String("config_file_path", configFilePath),
+					slog.String("err", err.Error()),
 				)
 			}
 		}
 
 		if workingDir, err := os.Getwd(); err == nil {
 			configFilePath = filepath.Join(workingDir, "nurse.yaml")
-			logger.Debug("Attempt to load config file from current working directory")
+			slog.Debug("Attempt to load config file from current working directory")
 			if err = out.ReadFromFile(configFilePath); err == nil {
-				return out, nil
+				return nil
 			} else {
-				logger.Warn(
+				slog.Warn(
 					"Failed to load config file",
-					zap.String("config_file_path", configFilePath),
-					zap.Error(err),
+					slog.String("config_file_path", configFilePath),
+					slog.String("err", err.Error()),
 				)
 			}
 		}
 
 		if home, err := os.UserHomeDir(); err == nil {
 			configFilePath = filepath.Join(home, ".nurse.yaml")
-			logger.Debug("Attempt to load config file from user home directory")
+			slog.Debug("Attempt to load config file from user home directory")
 			if err = out.ReadFromFile(configFilePath); err == nil {
-				return out, nil
+				return nil
 			} else {
-				logger.Warn(
+				slog.Warn(
 					"Failed to load config file",
-					zap.String("config_file_path", configFilePath),
-					zap.Error(err),
+					slog.String("config_file_path", configFilePath),
+					slog.String("err", err.Error()),
 				)
 			}
 		}
 
 		configFilePath = filepath.Join("", "etc", "nurse", "config.yaml")
-		logger.Debug("Attempt to load config file from global config directory")
+		slog.Debug("Attempt to load config file from global config directory")
 		if err := out.ReadFromFile(configFilePath); err == nil {
-			return out, nil
+			return nil
 		} else {
-			logger.Warn(
+			slog.Warn(
 				"Failed to load config file",
-				zap.String("config_file_path", configFilePath),
-				zap.Error(err),
+				slog.String("config_file_path", configFilePath),
+				slog.String("err", err.Error()),
 			)
 		}
 
-		return Nurse{}, nil
+		return nil
 	})
 }

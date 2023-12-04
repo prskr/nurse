@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"log/slog"
 
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"
@@ -43,6 +44,11 @@ func (s *SelectCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup
 }
 
 func (s *SelectCheck) Execute(ctx check.Context) error {
+	slog.Default().Debug("Execute check",
+		slog.String("check", "sql.SELECT"),
+		slog.String("query", s.Query),
+	)
+
 	for {
 		select {
 		case <-ctx.Done():

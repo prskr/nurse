@@ -2,13 +2,11 @@ package main
 
 import (
 	"io/fs"
+	"log/slog"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
-
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"golang.org/x/exp/slices"
 )
 
 const defaultDirPermissions = 0o755
@@ -40,29 +38,13 @@ func init() {
 		panic(err)
 	}
 
-	if err := initLogging(); err != nil {
-		panic(err)
-	}
+	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stderr, nil)))
 
 	if err := initSourceFiles(); err != nil {
 		panic(err)
 	}
 
-	zap.L().Info("Completed initialization")
-}
-
-func initLogging() error {
-	cfg := zap.NewDevelopmentConfig()
-	cfg.Encoding = "console"
-	cfg.Level = zap.NewAtomicLevelAt(zapcore.InfoLevel)
-
-	if logger, err := cfg.Build(); err != nil {
-		return err
-	} else {
-		zap.ReplaceGlobals(logger)
-	}
-
-	return nil
+	slog.Info("Completed initialization")
 }
 
 func initSourceFiles() error {

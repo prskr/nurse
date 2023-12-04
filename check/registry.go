@@ -25,17 +25,20 @@ type (
 	}
 )
 
-func (r *Registry) Register(module *Module) error {
+func (r *Registry) Register(modules ...*Module) error {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
-	modName := strings.ToLower(module.Name())
+	for _, mod := range modules {
+		modName := strings.ToLower(mod.Name())
 
-	if _, ok := r.mods[modName]; ok {
-		return fmt.Errorf("%w: %s", ErrModuleNameConflict, modName)
+		if _, ok := r.mods[modName]; ok {
+			return fmt.Errorf("%w: %s", ErrModuleNameConflict, modName)
+		}
+
+		r.mods[modName] = mod
 	}
 
-	r.mods[modName] = module
 	return nil
 }
 

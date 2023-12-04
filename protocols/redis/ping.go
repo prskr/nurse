@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"github.com/redis/go-redis/v9"
 
@@ -21,6 +22,11 @@ type PingCheck struct {
 }
 
 func (p PingCheck) Execute(ctx check.Context) error {
+	slog.Default().Debug("Execute check",
+		slog.String("check", "redis.PING"),
+		slog.String("msg", p.Message),
+	)
+
 	if p.Message == "" {
 		return p.Ping(ctx).Err()
 	}

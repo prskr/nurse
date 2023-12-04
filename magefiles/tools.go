@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"os/exec"
 
 	"github.com/magefile/mage/sh"
-	"go.uber.org/zap"
 )
 
 var (
@@ -16,17 +16,15 @@ var (
 
 func ensureGoTool(toolName, importPath, version string) error {
 	return checkForTool(toolName, func() error {
-		logger := zap.L()
 		toolToInstall := fmt.Sprintf("%s@%s", importPath, version)
-		logger.Info("Installing Go tool", zap.String("toolToInstall", toolToInstall))
+		slog.Info("Installing Go tool", slog.String("toolToInstall", toolToInstall))
 		return GoInstall(toolToInstall)
 	})
 }
 
 func checkForTool(toolName string, fallbackAction func() error) error {
-	logger := zap.L()
 	if _, err := exec.LookPath(toolName); err != nil {
-		logger.Warn("tool is missing", zap.String("toolName", toolName))
+		slog.Warn("tool is missing", slog.String("toolName", toolName))
 		return fallbackAction()
 	}
 

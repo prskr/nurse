@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/redis/go-redis/v9"
 
@@ -20,6 +21,11 @@ type GetCheck struct {
 }
 
 func (g *GetCheck) Execute(ctx check.Context) error {
+	slog.Default().Debug("Execute check",
+		slog.String("check", "redis.GET"),
+		slog.String("key", g.Key),
+	)
+
 	for {
 		select {
 		case <-ctx.Done():
