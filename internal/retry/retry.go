@@ -10,7 +10,12 @@ import (
 // It returns the last error encountered during the attempts.
 // If the context is canceled, it returns the context error (if there is no previous error),
 // or the joined error of the last error and the context error (otherwise).
-func Retry(ctx context.Context, numberOfAttempts uint, attemptTimeout time.Duration, f func(ctx context.Context, attempt int) error) (lastErr error) {
+func Retry(
+	ctx context.Context,
+	numberOfAttempts uint,
+	attemptTimeout time.Duration,
+	f func(ctx context.Context, attempt int) error,
+) (lastErr error) {
 	baseCtx, baseCancel := context.WithTimeout(ctx, time.Duration(numberOfAttempts)*attemptTimeout)
 	defer baseCancel()
 

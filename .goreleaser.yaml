@@ -23,10 +23,11 @@ changelog:
       - '^docs:'
       - '^test:'
 
+force_token: gitea
 release:
   gitea:
     owner: prskr
-    repo: nurse
+    name: nurse
   ids:
     - nurse
   mode: replace
@@ -42,3 +43,7 @@ dockers:
       - code.icb4dc0.de/prskr/nurse:{{ .Major }}
       - code.icb4dc0.de/prskr/nurse:{{ .ShortCommit}}
     dockerfile: deployments/Dockerfile
+
+gitea_urls:
+  api: https://code.icb4dc0.de/api/v1
+  download: https://code.icb4dc0.de
