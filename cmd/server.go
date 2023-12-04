@@ -1,13 +1,15 @@
 package cmd
 
 import (
+	"context"
 	"errors"
 	"log/slog"
+	"net"
 	"net/http"
-	"time"
+
+	"github.com/urfave/cli/v2"
 
 	"code.icb4dc0.de/prskr/nurse/api"
-	"github.com/urfave/cli/v2"
 )
 
 type server struct {
@@ -23,9 +25,12 @@ func (a *server) RunServer(ctx *cli.Context) error {
 	}
 
 	srv := http.Server{
-		Addr:              ":8080",
-		Handler:           mux,
-		ReadHeaderTimeout: 100 * time.Millisecond,
+		Addr:              ctx.String(httpAddressFlag),
+		ReadHeaderTimeout: ctx.Duration(httpReadHeaderTimeout),
+		BaseContext: func(listener net.Listener) context.Context {
+			return ctx.Context
+		},
+		Handler: mux,
 	}
 
 	if err := srv.ListenAndServe(); err != nil {

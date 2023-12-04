@@ -6,17 +6,28 @@ import (
 	"os"
 	"time"
 
+	"github.com/urfave/cli/v2"
+
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"
 	"code.icb4dc0.de/prskr/nurse/protocols/http"
 	"code.icb4dc0.de/prskr/nurse/protocols/redis"
 	"code.icb4dc0.de/prskr/nurse/protocols/sql"
-	"github.com/urfave/cli/v2"
 )
 
 const (
 	defaultCheckTimeout = 500 * time.Millisecond
 	defaultAttemptCount = 20
+)
+
+const (
+	logLevelFlag          = "log.level"
+	httpAddressFlag       = "http.address"
+	httpReadHeaderTimeout = "http.read-header-timeout"
+	maxCheckAttemptsFlag  = "check-attempts"
+	checkTimeoutFlag      = "check-timeout"
+	serversFlag           = "servers"
+	configFlag            = "config"
 )
 
 func NewApp() (*cli.App, error) {
@@ -46,30 +57,30 @@ func NewApp() (*cli.App, error) {
 		Before:               app.init,
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:    "config",
+				Name:    configFlag,
 				Usage:   "Config file to load, if not set `$HOME/.nurse.yaml`, `/etc/nurse/config.yaml` and `./nurse.yaml` are tried  - optional",
 				Aliases: []string{"c"},
 				EnvVars: []string{"NURSE_CONFIG"},
 			},
 			&cli.DurationFlag{
-				Name:    "check-timeout",
+				Name:    checkTimeoutFlag,
 				Usage:   "Timeout when running checks",
 				Value:   defaultCheckTimeout,
 				EnvVars: []string{"NURSE_CHECK_TIMEOUT"},
 			},
 			&cli.UintFlag{
-				Name:    "check-attempts",
+				Name:    maxCheckAttemptsFlag,
 				Usage:   "Number of attempts for a check",
 				Value:   defaultAttemptCount,
 				EnvVars: []string{"NURSE_CHECK_ATTEMPTS"},
 			},
 			&cli.StringFlag{
-				Name:  "log-level",
+				Name:  logLevelFlag,
 				Usage: "Log level to use",
 				Value: "info",
 			},
 			&cli.StringSliceFlag{
-				Name:    "servers",
+				Name:    serversFlag,
 				Usage:   "",
 				Aliases: []string{"s"},
 			},
@@ -83,8 +94,20 @@ func NewApp() (*cli.App, error) {
 				Flags: []cli.Flag{
 					&cli.StringSliceFlag{
 						Name:    "endpoints",
-						Usage:   "",
+						Usage:   "Endpoints to expose in the HTTP server",
 						Aliases: []string{"ep"},
+					},
+					&cli.StringFlag{
+						Name:    httpAddressFlag,
+						Usage:   "HTTP server address",
+						Value:   ":8080",
+						EnvVars: []string{"NURSE_HTTP_ADDRESS"},
+					},
+					&cli.DurationFlag{
+						Name:    httpReadHeaderTimeout,
+						Usage:   "Timeout for reading headers in the HTTP server",
+						Value:   100 * time.Millisecond,
+						EnvVars: []string{"NURSE_HTTP_READ_HEADER_TIMEOUT"},
 					},
 				},
 			},
@@ -109,16 +132,16 @@ type app struct {
 }
 
 func (a *app) init(ctx *cli.Context) (err error) {
-	if err = a.configureLogging(ctx.String("log-level")); err != nil {
+	if err = a.configureLogging(ctx.String(logLevelFlag)); err != nil {
 		return err
 	}
 
 	a.nurseInstance, err = config.New(
-		config.WithCheckAttempts(ctx.Uint("check-attempts")),
-		config.WithCheckDuration(ctx.Duration("check-timeout")),
-		config.WithConfigFile(ctx.String("config")),
+		config.WithCheckAttempts(ctx.Uint(maxCheckAttemptsFlag)),
+		config.WithCheckDuration(ctx.Duration(checkTimeoutFlag)),
+		config.WithConfigFile(ctx.String(configFlag)),
 		config.WithServersFromEnv(),
-		config.WithServersFromArgs(ctx.StringSlice("servers")),
+		config.WithServersFromArgs(ctx.StringSlice(serversFlag)),
 		config.WithEndpointsFromEnv(),
 	)
 

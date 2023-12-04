@@ -10,6 +10,7 @@ import (
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"
 	"code.icb4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/internal/retry"
 	"code.icb4dc0.de/prskr/nurse/validation"
 )
 
@@ -21,39 +22,27 @@ type PingCheck struct {
 	Message    string
 }
 
-func (p PingCheck) Execute(ctx check.Context) error {
-	slog.Default().Debug("Execute check",
+func (p *PingCheck) Execute(ctx check.Context) error {
+	logger := slog.Default().With(
 		slog.String("check", "redis.PING"),
 		slog.String("msg", p.Message),
 	)
 
-	if p.Message == "" {
-		return p.Ping(ctx).Err()
-	}
+	return retry.Retry(ctx, ctx.AttemptCount(), ctx.AttemptTimeout(), func(ctx context.Context, attempt int) error {
+		logger.Debug("Execute check", slog.Int("attempt", attempt))
 
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			attemptCtx, cancel := ctx.AttemptContext()
-			err := p.executeAttempt(attemptCtx)
-			cancel()
-			if err == nil {
-				return nil
-			}
+		if p.Message == "" {
+			return p.Ping(ctx).Err()
 		}
-	}
-}
 
-func (p PingCheck) executeAttempt(ctx context.Context) error {
-	if resp, err := p.Do(ctx, "PING", p.Message).Text(); err != nil {
-		return err
-	} else if resp != p.Message {
-		return fmt.Errorf("expected value %s got %s", p.Message, resp)
-	}
+		if resp, err := p.Do(ctx, "PING", p.Message).Text(); err != nil {
+			return err
+		} else if resp != p.Message {
+			return fmt.Errorf("expected value %s got %s", p.Message, resp)
+		}
 
-	return nil
+		return nil
+	})
 }
 
 func (p *PingCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) error {

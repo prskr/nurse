@@ -13,6 +13,9 @@ func Module() *check.Module {
 		check.WithCheck("get", check.FactoryFunc(func() check.SystemChecker {
 			return new(GetCheck)
 		})),
+		check.WithCheck("set", check.FactoryFunc(func() check.SystemChecker {
+			return new(SetCheck)
+		})),
 	)
 	if err != nil {
 		panic(err)

@@ -12,14 +12,24 @@ func AttemptsContext(parent context.Context, numberOfAttempts uint, attemptTimeo
 	base, cancel := context.WithTimeout(parent, finalTimeout)
 
 	return &checkContext{
-		Context:        base,
-		attemptTimeout: attemptTimeout,
+		Context:          base,
+		attemptTimeout:   attemptTimeout,
+		numberOfAttempts: numberOfAttempts,
 	}, cancel
 }
 
 type checkContext struct {
-	attemptTimeout time.Duration
+	attemptTimeout   time.Duration
+	numberOfAttempts uint
 	context.Context
+}
+
+func (c *checkContext) AttemptCount() uint {
+	return c.numberOfAttempts
+}
+
+func (c *checkContext) AttemptTimeout() time.Duration {
+	return c.attemptTimeout
 }
 
 func (c *checkContext) WithParent(ctx context.Context) Context {
@@ -27,8 +37,4 @@ func (c *checkContext) WithParent(ctx context.Context) Context {
 		Context:        ctx,
 		attemptTimeout: c.attemptTimeout,
 	}
-}
-
-func (c *checkContext) AttemptContext() (context.Context, context.CancelFunc) {
-	return context.WithTimeout(c, c.attemptTimeout)
 }

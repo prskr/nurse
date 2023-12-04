@@ -9,6 +9,7 @@ import (
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"
 	"code.icb4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/internal/retry"
 	"code.icb4dc0.de/prskr/nurse/validation"
 )
 
@@ -44,36 +45,25 @@ func (s *SelectCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup
 }
 
 func (s *SelectCheck) Execute(ctx check.Context) error {
-	slog.Default().Debug("Execute check",
+	logger := slog.Default().With(
 		slog.String("check", "sql.SELECT"),
 		slog.String("query", s.Query),
 	)
 
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			attemptCtx, cancel := ctx.AttemptContext()
-			err := s.executeAttempt(attemptCtx)
-			cancel()
-			if err == nil {
-				return nil
-			}
+	return retry.Retry(ctx, ctx.AttemptCount(), ctx.AttemptTimeout(), func(ctx context.Context, attempt int) error {
+		logger.Debug("Execute check", slog.Int("attempt", attempt))
+
+		logger.Debug("")
+
+		rows, err := s.QueryContext(ctx, s.Query)
+		if err != nil {
+			return err
 		}
-	}
-}
 
-func (s *SelectCheck) executeAttempt(ctx context.Context) (err error) {
-	var rows *sql.Rows
-	rows, err = s.QueryContext(ctx, s.Query)
-	if err != nil {
-		return err
-	}
+		defer func() {
+			err = errors.Join(rows.Close(), rows.Err())
+		}()
 
-	defer func() {
-		err = errors.Join(rows.Close(), rows.Err())
-	}()
-
-	return s.validators.Validate(rows)
+		return s.validators.Validate(rows)
+	})
 }

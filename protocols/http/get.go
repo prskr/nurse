@@ -2,6 +2,7 @@ package http
 
 import (
 	"bytes"
+	"context"
 	"io"
 	"log/slog"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"
 	"code.icb4dc0.de/prskr/nurse/grammar"
+	"code.icb4dc0.de/prskr/nurse/internal/retry"
 	"code.icb4dc0.de/prskr/nurse/validation"
 )
 
@@ -38,31 +40,35 @@ func (g *GenericCheck) SetClient(client *http.Client) {
 }
 
 func (g *GenericCheck) Execute(ctx check.Context) error {
-	slog.Default().Debug("Execute check",
+	logger := slog.Default().With(
 		slog.String("check", "http"),
 		slog.String("method", g.Method),
 		slog.String("url", g.URL),
 	)
 
-	var body io.Reader
-	if len(g.Body) > 0 {
-		body = bytes.NewReader(g.Body)
-	}
-	req, err := http.NewRequestWithContext(ctx, g.Method, g.URL, body)
-	if err != nil {
-		return err
-	}
+	return retry.Retry(ctx, ctx.AttemptCount(), ctx.AttemptTimeout(), func(ctx context.Context, attempt int) error {
+		logger.Debug("Execute check", slog.Int("attempt", attempt))
 
-	resp, err := g.Do(req)
-	if err != nil {
-		return err
-	}
+		var body io.Reader
+		if len(g.Body) > 0 {
+			body = bytes.NewReader(g.Body)
+		}
+		req, err := http.NewRequestWithContext(ctx, g.Method, g.URL, body)
+		if err != nil {
+			return err
+		}
 
-	defer func() {
-		_ = resp.Body.Close()
-	}()
+		resp, err := g.Do(req)
+		if err != nil {
+			return err
+		}
 
-	return g.validators.Validate(resp)
+		defer func() {
+			_ = resp.Body.Close()
+		}()
+
+		return g.validators.Validate(resp)
+	})
 }
 
 func (g *GenericCheck) UnmarshalCheck(c grammar.Check, _ config.ServerLookup) error {

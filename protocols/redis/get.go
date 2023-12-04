@@ -6,6 +6,8 @@ import (
 
 	"github.com/redis/go-redis/v9"
 
+	"code.icb4dc0.de/prskr/nurse/internal/retry"
+
 	"code.icb4dc0.de/prskr/nurse/check"
 	"code.icb4dc0.de/prskr/nurse/config"
 	"code.icb4dc0.de/prskr/nurse/grammar"
@@ -21,34 +23,22 @@ type GetCheck struct {
 }
 
 func (g *GetCheck) Execute(ctx check.Context) error {
-	slog.Default().Debug("Execute check",
+	logger := slog.Default().With(
 		slog.String("check", "redis.GET"),
 		slog.String("key", g.Key),
 	)
 
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			attemptCtx, cancel := ctx.AttemptContext()
-			err := g.executeAttempt(attemptCtx)
-			cancel()
-			if err == nil {
-				return nil
-			}
+	return retry.Retry(ctx, ctx.AttemptCount(), ctx.AttemptTimeout(), func(ctx context.Context, attempt int) error {
+		logger.Debug("Execute check", slog.Int("attempt", attempt))
+
+		cmd := g.Get(ctx, g.Key)
+
+		if err := cmd.Err(); err != nil {
+			return err
 		}
-	}
-}
 
-func (g *GetCheck) executeAttempt(ctx context.Context) error {
-	cmd := g.Get(ctx, g.Key)
-
-	if err := cmd.Err(); err != nil {
-		return err
-	}
-
-	return g.validators.Validate(cmd)
+		return g.validators.Validate(cmd)
+	})
 }
 
 func (g *GetCheck) UnmarshalCheck(c grammar.Check, lookup config.ServerLookup) error {

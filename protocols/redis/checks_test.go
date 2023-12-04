@@ -56,6 +56,11 @@ func TestChecks_Execute(t *testing.T) {
 			check:   `redis.PING("%s", "Hello, Redis!")`,
 			wantErr: false,
 		},
+		{
+			name:    "SET check",
+			check:   `redis.SET("%s", "Hello", "World!")`,
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		tt := tt

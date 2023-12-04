@@ -3,6 +3,7 @@ package check
 import (
 	"context"
 	"errors"
+	"time"
 
 	"code.icb4dc0.de/prskr/nurse/config"
 	"code.icb4dc0.de/prskr/nurse/grammar"
@@ -21,7 +22,8 @@ type (
 
 	Context interface {
 		context.Context
-		AttemptContext() (context.Context, context.CancelFunc)
+		AttemptCount() uint
+		AttemptTimeout() time.Duration
 		WithParent(ctx context.Context) Context
 	}
 

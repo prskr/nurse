@@ -75,12 +75,22 @@ func (g *GenericCmdValidator) Validate(cmder redis.Cmder) error {
 		return err
 	}
 
-	if in, ok := cmder.(*redis.StringCmd); ok {
+	switch in := cmder.(type) {
+	case *redis.StringCmd:
+		if err := in.Err(); err != nil {
+			return err
+		}
+
 		res, err := in.Result()
 		if err != nil {
 			return err
 		}
+
 		return g.comparator.Equals(res)
+	case *redis.StatusCmd:
+		if err := in.Err(); err != nil {
+			return err
+		}
 	}
 
 	return nil
