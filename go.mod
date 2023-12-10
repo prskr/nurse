@@ -9,7 +9,7 @@ require (
 	github.com/alecthomas/participle/v2 v2.1.1
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/google/uuid v1.4.0
-	github.com/jackc/pgx/v5 v5.5.0
+	github.com/jackc/pgx/v5 v5.5.1
 	github.com/magefile/mage v1.15.0
 	github.com/maxatome/go-testdeep v1.13.0
 	github.com/mitchellh/mapstructure v1.5.0
