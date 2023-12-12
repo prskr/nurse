@@ -40,15 +40,21 @@ archives:
       - nurse
     format: tar.gz
 
-dockers:
-  - ids:
-      - nurse
-    image_templates:
-      - code.icb4dc0.de/prskr/nurse:latest
-      - code.icb4dc0.de/prskr/nurse:{{ .Tag }}
-      - code.icb4dc0.de/prskr/nurse:{{ .Major }}
-      - code.icb4dc0.de/prskr/nurse:{{ .ShortCommit}}
-    dockerfile: deployments/Dockerfile
+kos:
+  - id: nurse
+    build: nurse
+    repository: code.icb4dc0.de/prskr
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    tags:
+      - "latest"
+      - "{{ .Tag }}"
+      - "{{ .Major }}"
+      - "{{ .ShortCommit}}"
+    bare: true
+    preserve_import_paths: false
+    base_import_paths: true
 
 gitea_urls:
   api: https://code.icb4dc0.de/api/v1

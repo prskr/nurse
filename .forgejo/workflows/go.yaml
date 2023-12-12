@@ -24,6 +24,19 @@ jobs:
         with:
           # Semantic version range syntax or exact version of Go
           go-version: '1.21.x'
+      
+      - name: Install ko
+        run: |
+          set -e
+          arch=$(uname -m)
+          case $arch in
+            aarch64)
+              arch="arm64"
+              ;;
+          esac
+          curl -L $(curl -L -s https://api.github.com/repos/ko-build/ko/releases/latest | jq -r "[.assets[] | select(.name | endswith(\"Linux_${arch}.tar.gz\"))][0].browser_download_url") | tar -C /tmp -xzf -
+          mv /tmp/ko /usr/local/bin
+          ko version
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
