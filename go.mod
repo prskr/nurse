@@ -13,7 +13,7 @@ require (
 	github.com/magefile/mage v1.15.0
 	github.com/maxatome/go-testdeep v1.13.0
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/redis/go-redis/v9 v9.3.0
+	github.com/redis/go-redis/v9 v9.3.1
 	github.com/testcontainers/testcontainers-go v0.26.0
 	github.com/urfave/cli/v2 v2.26.0
 	github.com/valyala/bytebufferpool v1.0.0
