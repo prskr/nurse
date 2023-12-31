@@ -15,7 +15,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/redis/go-redis/v9 v9.3.1
 	github.com/testcontainers/testcontainers-go v0.27.0
-	github.com/urfave/cli/v2 v2.27.0
+	github.com/urfave/cli/v2 v2.27.1
 	github.com/valyala/bytebufferpool v1.0.0
 	golang.org/x/sync v0.5.0
 	gopkg.in/yaml.v3 v3.0.1
