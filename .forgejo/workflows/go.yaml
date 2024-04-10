@@ -19,12 +19,12 @@ jobs:
           lfs: 'true'
           fetch-tags: 'true'
 
-      - name: Setup Go 1.21.x
+      - name: Setup Go 1.22.x
         uses: actions/setup-go@v5
         with:
           # Semantic version range syntax or exact version of Go
-          go-version: '1.21.x'
-      
+          go-version: '1.22.x'
+
       - name: Install ko
         run: |
           set -e
