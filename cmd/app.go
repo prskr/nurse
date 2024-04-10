@@ -144,7 +144,6 @@ func (a *app) init(ctx *cli.Context) (err error) {
 		config.WithServersFromArgs(ctx.StringSlice(serversFlag)),
 		config.WithEndpointsFromEnv(),
 	)
-
 	if err != nil {
 		return fmt.Errorf("failed to load Nurse config: %w", err)
 	}

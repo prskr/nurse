@@ -9,7 +9,6 @@ import (
 	"code.icb4dc0.de/prskr/nurse/config"
 )
 
-//nolint:paralleltest // not possible with env setup
 func TestServersFromEnv(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -76,7 +75,6 @@ func TestServersFromEnv(t *testing.T) {
 	}
 }
 
-//nolint:paralleltest // not possible with env setup
 func TestEndpointsFromEnv(t *testing.T) {
 	tests := []struct {
 		name    string
