@@ -17,7 +17,7 @@ require (
 	github.com/testcontainers/testcontainers-go v0.29.1
 	github.com/urfave/cli/v2 v2.27.2
 	github.com/valyala/bytebufferpool v1.0.0
-	golang.org/x/sync v0.6.0
+	golang.org/x/sync v0.7.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
