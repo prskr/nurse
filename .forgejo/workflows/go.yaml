@@ -39,7 +39,7 @@ jobs:
           ko version
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v6
 
       - name: Install Task
         uses: arduino/setup-task@v1
