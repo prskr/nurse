@@ -2,7 +2,7 @@ module code.icb4dc0.de/prskr/nurse
 
 go 1.22
 
-toolchain go1.22.3
+toolchain go1.22.4
 
 require (
 	github.com/PaesslerAG/jsonpath v0.1.1
